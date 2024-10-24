@@ -1,4 +1,4 @@
 package persistence;
 
-public class AlbumDaoImpl {
+public class AlbumDaoImpl extends MySQLDao implements AlbumDao{
 }

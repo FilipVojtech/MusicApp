@@ -1,4 +1,4 @@
 package persistence;
 
-public class UserDaoImpl {
+public class UserDaoImpl extends MySQLDao implements UserDao{
 }

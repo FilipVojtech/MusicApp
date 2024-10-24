@@ -1,4 +1,4 @@
 package persistence;
 
-public class SongDaoImpl {
+public class SongDaoImpl extends MySQLDao implements SongDao{
 }

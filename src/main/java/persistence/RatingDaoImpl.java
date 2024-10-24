@@ -1,4 +1,4 @@
 package persistence;
 
-public class RatingDaoImpl {
+public class RatingDaoImpl extends MySQLDao implements RatingDao{
 }

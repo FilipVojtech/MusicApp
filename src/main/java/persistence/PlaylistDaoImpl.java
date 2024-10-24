@@ -1,4 +1,4 @@
 package persistence;
 
-public class PlaylistDaoImpl {
+public class PlaylistDaoImpl extends MySQLDao implements PlaylistDao {
 }

@@ -5,21 +5,17 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
 import java.util.Properties;
 
 public class MySQLDao {
     private Properties properties;
-    private Connection conn;
-
-    public MySQLDao(){
-    }
+    private Connection conn = null;
 
     public MySQLDao(Connection conn){
         this.conn = conn;
     }
 
-    public MySQLDao(String propertiesFilename){
+    public MySQLDao(String propertiesFilename) {
         properties = new Properties();
         try {
             // Get the path to the specified properties file
@@ -30,48 +26,50 @@ public class MySQLDao {
             System.out.println("An exception occurred when attempting to load properties from \"" + propertiesFilename + "\": " + e.getMessage());
             e.printStackTrace();
         }
-
     }
 
-    public Connection getConnection(){
+    public Connection getConnection() {
         if(conn != null){
             return conn;
         }
-
-        String driver = properties.getProperty("driver");
-        String url = properties.getProperty("url");
-        String database = properties.getProperty("database");
-        String username = properties.getProperty("username");
+        // Retrieve connection information from properties file
+        // Where no values exist for a property, a default is used
+        String driver = properties.getProperty("driver", "com.mysql.cj.jdbc.Driver");
+        String url = properties.getProperty("url", "jdbc:mysql://127.0.0.1:3306/");
+        String database = properties.getProperty("database", "classicmodels");
+        String username = properties.getProperty("username", "root");
         String password = properties.getProperty("password", "");
-        try{
-            Class.forName(driver);
 
-            try{
-                Connection conn = DriverManager.getConnection(url+database, username, password);
-                return conn;
-            }catch(SQLException e){
-                System.out.println(LocalDateTime.now() + ": An SQLException  occurred while trying to connect to the " + url +
-                        "database.");
-                System.out.println("Error: " + e.getMessage());
-                e.printStackTrace();
-            }
-        }catch(ClassNotFoundException e){
-            System.out.println(LocalDateTime.now() + ": A ClassNotFoundException occurred while trying to load the MySQL driver.");
-            System.out.println("Error: " + e.getMessage());
+        Connection connection = null;
+
+        try {
+            // Load the database driver
+            Class.forName(driver);
+            // TRY to get a connection to the database
+            connection = DriverManager.getConnection(url+database, username, password);
+        } catch (ClassNotFoundException e) {
+            System.out.println("ClassNotFoundException occurred when trying to load driver: " + e.getMessage());
             e.printStackTrace();
+            System.exit(1);
+        } catch (SQLException e) {
+            System.out.println("SQL Exception occurred when attempting to connect to database.");
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            System.exit(2);
         }
-        return null;
+        return connection;
     }
 
-    public void freeConnection(Connection conn){
+    public void freeConnection(Connection con){
         try {
-            conn.close();
+            if (con != null) {
+                con.close();
+            }
         } catch (SQLException e) {
-            System.out.println(LocalDateTime.now() + ": An SQLException occurred while trying to close the " +
-                    "database connection" +
-                    ".");
-            System.out.println("Error: " + e.getMessage());
+            System.out.println("SQL Exception occurred when attempting to free connection to database.");
+            System.out.println(e.getMessage());
             e.printStackTrace();
+            System.exit(1);
         }
     }
 }

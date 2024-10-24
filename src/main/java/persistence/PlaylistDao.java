@@ -1,6 +1,7 @@
 package persistence;
 
 import business.Playlist;
+import business.Song;
 
 import java.util.List;
 
@@ -60,26 +61,26 @@ public interface PlaylistDao {
      */
     Playlist getPlaylistById(int playlistId);
 
-//    /**
-//     * Retrieves all playlists belonging to a user.
-//     *
-//     * @param userId the ID of the user
-//     * @return a list of the user's playlists
-//     */
-//    List<Playlist> getUserPlaylists(int userId);
-//
-//    /**
-//     * Retrieves all public playlists.
-//     *
-//     * @return a list of public playlists
-//     */
-//    List<Playlist> getPublicPlaylists();
-//
-//    /**
-//     * Retrieves all songs in a playlist.
-//     *
-//     * @param playlistId the ID of the playlist
-//     * @return a list of songs in the playlist
-//     */
-//    List<Song> getSongsInPlaylist(int playlistId);
+    /**
+     * Retrieves all playlists belonging to a user.
+     *
+     * @param userId the ID of the user
+     * @return a list of the user's playlists
+     */
+    List<Playlist> getUserPlaylists(int userId);
+
+    /**
+     * Retrieves all public playlists.
+     *
+     * @return a list of public playlists
+     */
+    List<Playlist> getPublicPlaylists();
+
+    /**
+     * Retrieves all songs in a playlist.
+     *
+     * @param playlistId the ID of the playlist
+     * @return a list of songs in the playlist
+     */
+    List<Song> getSongsInPlaylist(int playlistId);
 }

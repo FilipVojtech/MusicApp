@@ -1,6 +1,7 @@
 package persistence;
 
 import business.Playlist;
+import business.Song;
 
 import java.sql.Connection;
 import java.util.List;
@@ -44,16 +45,16 @@ public class PlaylistDaoImpl extends MySQLDao implements PlaylistDao {
         return null;
     }
 
-//    @Override
-//    public List<Playlist> getUserPlaylists(int userId) {
-//    }
-//
-//    @Override
-//    public List<Playlist> getPublicPlaylists() {
-//    }
-//
-//    @Override
-//    public List<Song> getSongsInPlaylist(int playlistId) {
-//    }
+    @Override
+    public List<Playlist> getUserPlaylists(int userId) {
+    }
+
+    @Override
+    public List<Playlist> getPublicPlaylists() {
+    }
+
+    @Override
+    public List<Song> getSongsInPlaylist(int playlistId) {
+    }
 
 }

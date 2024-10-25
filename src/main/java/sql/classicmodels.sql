@@ -1,58 +1,65 @@
+DROP DATABASE IF EXISTS classicmodels;
+CREATE DATABASE IF NOT EXISTS classicmodels;
+
+USE classicmodels;
+
 CREATE TABLE artist (
-                        id SERIAL PRIMARY KEY,
+                        id INT AUTO_INCREMENT PRIMARY KEY,
                         name VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE album (
-                       id SERIAL PRIMARY KEY,
-                       artist_id INT NOT NULL,
+                       id INT AUTO_INCREMENT PRIMARY KEY,
+                       artist_id INT,
                        title VARCHAR(255) NOT NULL,
                        release_date DATE,
                        FOREIGN KEY (artist_id) REFERENCES artist(id)
 );
 
 CREATE TABLE song (
-                      id SERIAL PRIMARY KEY,
-                      artist_id INT NOT NULL,
+                      id INT AUTO_INCREMENT PRIMARY KEY,
+                      artist_id INT,
                       title VARCHAR(255) NOT NULL,
+                      rating INT CHECK (rating >= 1 AND rating <= 5),  -- Rating must be between 1 and 5
                       FOREIGN KEY (artist_id) REFERENCES artist(id)
 );
 
 CREATE TABLE album_songs (
-                             album_id INT NOT NULL,
-                             song_id INT NOT NULL,
+                             album_id INT,
+                             song_id INT,
                              PRIMARY KEY (album_id, song_id),
                              FOREIGN KEY (album_id) REFERENCES album(id),
                              FOREIGN KEY (song_id) REFERENCES song(id)
 );
 
-CREATE TABLE "user" (
-                        id SERIAL PRIMARY KEY,
-                        email VARCHAR(255) NOT NULL,
-                        password VARCHAR(255) NOT NULL,
-                        display_name VARCHAR(255)
+CREATE TABLE app_user (
+                          id INT AUTO_INCREMENT PRIMARY KEY,
+                          email VARCHAR(255) NOT NULL,
+                          password VARCHAR(255) NOT NULL,
+                          display_name VARCHAR(255)
 );
 
-
 CREATE TABLE playlist (
-                          id SERIAL PRIMARY KEY,
-                          owner_id INT NOT NULL,
-                          visibility BOOLEAN NOT NULL,
-                          FOREIGN KEY (owner_id) REFERENCES "user"(id)
+                          id INT AUTO_INCREMENT PRIMARY KEY,
+                          owner_id INT,
+                          visibility TINYINT(1),  -- TINYINT(1) for boolean values (0 = false, 1 = true)
+                          rating INT CHECK (rating >= 1 AND rating <= 5),  -- Rating must be between 1 and 5
+                          FOREIGN KEY (owner_id) REFERENCES app_user(id)
 );
 
 CREATE TABLE playlist_songs (
-                                song_id INT NOT NULL,
-                                playlist_id INT NOT NULL,
-                                PRIMARY KEY (song_id, playlist_id),
-                                FOREIGN KEY (song_id) REFERENCES song(id),
-                                FOREIGN KEY (playlist_id) REFERENCES playlist(id)
+                                playlist_id INT,
+                                song_id INT,
+                                PRIMARY KEY (playlist_id, song_id),
+                                FOREIGN KEY (playlist_id) REFERENCES playlist(id),
+                                FOREIGN KEY (song_id) REFERENCES song(id)
 );
 
 CREATE TABLE user_likes (
-                            user_id INT NOT NULL,
-                            song_id INT NOT NULL,
+                            user_id INT,
+                            song_id INT,
                             PRIMARY KEY (user_id, song_id),
-                            FOREIGN KEY (user_id) REFERENCES "user"(id),
+                            FOREIGN KEY (user_id) REFERENCES app_user(id),
                             FOREIGN KEY (song_id) REFERENCES song(id)
 );
+

@@ -1,9 +1,6 @@
 package business;
 
-import lombok.Data;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
+import lombok.*;
 
 /**
  * Represents a rating given by a user to a song.
@@ -12,6 +9,8 @@ import lombok.AllArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
+@Setter
 public class Rating {
     /**
      *  unique identifier for the rating.

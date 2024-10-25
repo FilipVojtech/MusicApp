@@ -40,7 +40,7 @@ public class AlbumDaoImpl extends MySQLDao implements AlbumDao{
                 Album album = new Album();
                 album.setId(resultSet.getInt("id"));
                 album.setTitle(resultSet.getString("title"));
-                album.setArtistId(resultSet.getInt("artist_id"));
+                album.setArtist_Id(resultSet.getInt("artist_id"));
                 albums.add(album); // Add the album to the list
             }
         } catch (SQLException e) {

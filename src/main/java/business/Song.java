@@ -13,5 +13,6 @@ public class Song {
     private int artist_id;
     private int albumId;
     private int rating;
+    private int id;
 
 }

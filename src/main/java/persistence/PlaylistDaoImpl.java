@@ -227,7 +227,7 @@ public class PlaylistDaoImpl extends MySQLDao implements PlaylistDao {
         return Song.builder()
                 .id(rs.getInt("id"))
                 .title(rs.getString("title"))
-                .artistId(rs.getInt("artist_id"))
+                .artist_id(rs.getInt("artist_id"))
                 // Include other song fields as necessary
                 .build();
     }

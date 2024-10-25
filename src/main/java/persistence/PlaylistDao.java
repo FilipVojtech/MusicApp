@@ -44,14 +44,14 @@ public interface PlaylistDao {
      */
     boolean removeSongFromPlaylist(int playlistId, int songId);
 
-    /**
-     * Renames a playlist.
-     *
-     * @param playlistId the ID of the playlist
-     * @param newName    the new name for the playlist
-     * @return true if the playlist was renamed successfully, false otherwise
-     */
-    boolean renamePlaylist(int playlistId, String newName);
+//    /**
+//     * Renames a playlist.
+//     *
+//     * @param playlistId the ID of the playlist
+//     * @param newName    the new name for the playlist
+//     * @return true if the playlist was renamed successfully, false otherwise
+//     */
+//    boolean renamePlaylist(int playlistId, String newName);
 
     /**
      * Retrieves a playlist by its ID.

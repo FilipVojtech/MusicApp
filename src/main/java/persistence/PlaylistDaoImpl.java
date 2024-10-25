@@ -5,6 +5,7 @@ import business.Song;
 import business.Rating;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PlaylistDaoImpl extends MySQLDao implements PlaylistDao {
@@ -159,17 +160,44 @@ public class PlaylistDaoImpl extends MySQLDao implements PlaylistDao {
 
         return playlist;
     }
-//    @Override
-//    public List<Playlist> getUserPlaylists(int userId) {
-//    }
-//
-//    @Override
-//    public List<Playlist> getPublicPlaylists() {
-//    }
-//
-//    @Override
-//    public List<Song> getSongsInPlaylist(int playlistId) {
-//    }
+    @Override
+    public List<Playlist> getUserPlaylists(int userId) {
+    }
+
+    @Override
+    public List<Playlist> getPublicPlaylists() {
+    }
+
+    @Override
+    public List<Song> getSongsInPlaylist(int playlistId) {
+        String sql = "SELECT s.* FROM song s JOIN playlist_songs ps ON s.id = ps.song_id WHERE ps.playlist_id = ?";
+        List<Song> songs = new ArrayList<>();
+
+        // Get a connection using the superclass
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            // Set the parameter
+            ps.setInt(1, playlistId);
+
+            // Execute the query
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Song song = mapSong(rs);
+                    songs.add(song);
+                }
+            } catch (SQLException e) {
+                System.err.println("Error executing query or processing results: " + e.getMessage());
+                e.printStackTrace();
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error preparing SQL for execution: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        return songs;
+    }
 
     /**
      * Maps a ResultSet row to a Playlist object.
@@ -184,6 +212,23 @@ public class PlaylistDaoImpl extends MySQLDao implements PlaylistDao {
                 .name(rs.getString("name"))
                 .isPublic(rs.getBoolean("visibility"))
                 .userId(rs.getInt("owner_id"))
+                .build();
+    }
+
+    /**
+     * Maps a ResultSet row to a Song object.
+     *
+     * @param rs the ResultSet containing song data
+     * @return a Song object
+     * @throws SQLException if a database access error occurs
+     */
+    private Song mapSong(ResultSet rs) throws SQLException {
+        // Adjust according to your Song class
+        return Song.builder()
+                .id(rs.getInt("id"))
+                .title(rs.getString("title"))
+                .artistId(rs.getInt("artist_id"))
+                // Include other song fields as necessary
                 .build();
     }
 

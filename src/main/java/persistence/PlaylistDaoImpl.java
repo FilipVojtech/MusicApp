@@ -102,19 +102,63 @@ public class PlaylistDaoImpl extends MySQLDao implements PlaylistDao {
 
     @Override
     public boolean removeSongFromPlaylist(int playlistId, int songId) {
-        return false;
-    }
+        String sql = "DELETE FROM playlist_songs WHERE playlist_id = ? AND song_id = ?";
+        int rowsAffected = 0;
 
-    @Override
-    public boolean renamePlaylist(int playlistId, String newName) {
-        return false;
+        // Get a connection using the superclass
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            // Set the parameters
+            ps.setInt(1, playlistId);
+            ps.setInt(2, songId);
+
+            // Execute the update
+            rowsAffected = ps.executeUpdate();
+
+        } catch (SQLException e) {
+            System.err.println("Error removing song from playlist: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        return rowsAffected > 0;
     }
+//    @Override
+//    public boolean renamePlaylist(int playlistId, String newName) {
+//        return false;
+//    }
 
     @Override
     public Playlist getPlaylistById(int playlistId) {
-        return null;
-    }
+        String sql = "SELECT * FROM playlist WHERE id = ?";
+        Playlist playlist = null;
 
+        // Get a connection using the superclass
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            // Set the parameter
+            ps.setInt(1, playlistId);
+
+            // Execute the query
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    playlist = mapPlaylist(rs);
+                    // Optionally, load songs in the playlist
+                    playlist.setSongs(getSongsInPlaylist(playlistId));
+                }
+            } catch (SQLException e) {
+                System.err.println("Error executing query or processing results: " + e.getMessage());
+                e.printStackTrace();
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error preparing SQL for execution: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        return playlist;
+    }
 //    @Override
 //    public List<Playlist> getUserPlaylists(int userId) {
 //    }
@@ -126,5 +170,21 @@ public class PlaylistDaoImpl extends MySQLDao implements PlaylistDao {
 //    @Override
 //    public List<Song> getSongsInPlaylist(int playlistId) {
 //    }
+
+    /**
+     * Maps a ResultSet row to a Playlist object.
+     *
+     * @param rs the ResultSet containing playlist data
+     * @return a Playlist object
+     * @throws SQLException if a database access error occurs
+     */
+    private Playlist mapPlaylist(ResultSet rs) throws SQLException {
+        return Playlist.builder()
+                .playlistId(rs.getInt("id"))
+                .name(rs.getString("name"))
+                .isPublic(rs.getBoolean("visibility"))
+                .userId(rs.getInt("owner_id"))
+                .build();
+    }
 
 }

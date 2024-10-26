@@ -146,6 +146,24 @@ public class RatingDaoImpl extends MySQLDao implements RatingDao{
 
     @Override
     public double getAverageRating(int songId) {
-        return 0;
+        String sql = "SELECT AVG(rating_value) AS avg_rating FROM song_ratings WHERE song_id = ?";
+        double averageRating = 0.0;
+
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, songId);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    averageRating = rs.getDouble("avg_rating");
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error calculating average rating: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        return averageRating;
     }
 }

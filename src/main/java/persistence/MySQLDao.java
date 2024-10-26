@@ -1,5 +1,6 @@
 package persistence;
 
+import java.io.Closeable;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -8,7 +9,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
-public class MySQLDao {
+public class MySQLDao implements Closeable {
     private Properties properties;
     private Connection conn = null;
 
@@ -84,6 +85,20 @@ public class MySQLDao {
         try {
             if (con != null) {
                 con.close();
+            }
+        } catch (SQLException e) {
+            System.out.println("SQL Exception occurred when attempting to free connection to database.");
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            System.exit(1);
+        }
+    }
+
+    @Override
+    public void close() {
+        try {
+            if (conn != null) {
+                conn.close();
             }
         } catch (SQLException e) {
             System.out.println("SQL Exception occurred when attempting to free connection to database.");

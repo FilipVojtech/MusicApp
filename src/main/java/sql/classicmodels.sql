@@ -24,6 +24,16 @@ CREATE TABLE song (
                       FOREIGN KEY (artist_id) REFERENCES artist(id)
 );
 
+CREATE TABLE song_ratings (
+                              rating_id INT AUTO_INCREMENT PRIMARY KEY,
+                              user_id INT NOT NULL,
+                              song_id INT NOT NULL,
+                              rating_value INT NOT NULL CHECK (rating_value >= 1 AND rating_value <= 5),
+                              UNIQUE KEY unique_user_song (user_id, song_id),
+                              FOREIGN KEY (user_id) REFERENCES app_user(id),
+                              FOREIGN KEY (song_id) REFERENCES song(id)
+);
+
 CREATE TABLE album_songs (
                              album_id INT,
                              song_id INT,

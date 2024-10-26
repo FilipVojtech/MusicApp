@@ -162,10 +162,56 @@ public class PlaylistDaoImpl extends MySQLDao implements PlaylistDao {
     }
     @Override
     public List<Playlist> getUserPlaylists(int userId) {
+        String sql = "SELECT * FROM playlist WHERE owner_id = ?";
+        List<Playlist> playlists = new ArrayList<>();
+
+        // Get a connection using the superclass
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            // Set the parameter
+            ps.setInt(1, userId);
+
+            // Execute the query
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Playlist playlist = mapPlaylist(rs);
+                    playlists.add(playlist);
+                }
+            } catch (SQLException e) {
+                System.err.println("Error executing query or processing results: " + e.getMessage());
+                e.printStackTrace();
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error preparing SQL for execution: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        return playlists;
     }
 
     @Override
     public List<Playlist> getPublicPlaylists() {
+        String sql = "SELECT * FROM playlist WHERE visibility = TRUE";
+        List<Playlist> playlists = new ArrayList<>();
+
+        // Get a connection using the superclass
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                Playlist playlist = mapPlaylist(rs);
+                playlists.add(playlist);
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error retrieving public playlists: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        return playlists;
     }
 
     @Override

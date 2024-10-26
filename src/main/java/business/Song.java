@@ -14,5 +14,8 @@ public class Song {
     private int albumId;
     private int rating;
     private int id;
+    private int playlistCount;
+    private Double averageRating;
+
 
 }

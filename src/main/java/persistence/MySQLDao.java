@@ -1,6 +1,7 @@
 package persistence;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -11,7 +12,26 @@ public class MySQLDao {
     private Properties properties;
     private Connection conn = null;
 
-    public MySQLDao(Connection conn){
+    /**
+     * No args constructor with defined default DB properties file.
+     *
+     * @author Filip Vojtěch
+     */
+    public MySQLDao() {
+        properties = new Properties();
+        var propertiesFile = "database-prod.properties";
+        try {
+            properties.load(new FileInputStream(propertiesFile));
+        } catch (FileNotFoundException e) {
+            System.out.println("Default credentials file not found.");
+            e.printStackTrace();
+        } catch (IOException e) {
+            System.out.println("An exception occurred when attempting to load properties");
+            e.printStackTrace();
+        }
+    }
+
+    public MySQLDao(Connection conn) {
         this.conn = conn;
     }
 
@@ -22,14 +42,14 @@ public class MySQLDao {
             String rootPath = Thread.currentThread().getContextClassLoader().getResource(propertiesFilename).getPath();
             // Load in all key-value pairs from properties file
             properties.load(new FileInputStream(rootPath));
-        }catch(IOException e){
+        } catch (IOException e) {
             System.out.println("An exception occurred when attempting to load properties from \"" + propertiesFilename + "\": " + e.getMessage());
             e.printStackTrace();
         }
     }
 
     public Connection getConnection() {
-        if(conn != null){
+        if (conn != null) {
             return conn;
         }
         // Retrieve connection information from properties file
@@ -46,7 +66,7 @@ public class MySQLDao {
             // Load the database driver
             Class.forName(driver);
             // TRY to get a connection to the database
-            connection = DriverManager.getConnection(url+database, username, password);
+            connection = DriverManager.getConnection(url + database, username, password);
         } catch (ClassNotFoundException e) {
             System.out.println("ClassNotFoundException occurred when trying to load driver: " + e.getMessage());
             e.printStackTrace();

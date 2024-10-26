@@ -11,6 +11,10 @@ import java.sql.SQLException;
  * @author Filip Vojtěch
  */
 public class UserDaoImpl extends MySQLDao implements UserDao {
+    public UserDaoImpl() {
+        super();
+    }
+
     public UserDaoImpl(Connection conn) {
         super(conn);
     }

@@ -86,12 +86,62 @@ public class RatingDaoImpl extends MySQLDao implements RatingDao{
 
     @Override
     public Song getTopRatedSong() {
-        return null;
+        String sql = "SELECT s.*, AVG(sr.rating_value) AS avg_rating " +
+                "FROM song s JOIN song_ratings sr ON s.id = sr.song_id " +
+                "GROUP BY s.id " +
+                "ORDER BY avg_rating DESC " +
+                "LIMIT 1";
+        Song song = null;
+
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            if (rs.next()) {
+                song = Song.builder()
+                        .id(rs.getInt("id"))
+                        .title(rs.getString("title"))
+                        .artist_id(rs.getInt("artist_id"))
+                        .rating(rs.getInt("rating"))
+                        .build();
+            }
+        } catch (SQLException e) {
+            System.err.println("Error retrieving top-rated song: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        return song;
     }
 
     @Override
     public Song getMostPopularSong() {
-        return null;
+        String sql = "SELECT s.*, COUNT(ps.playlist_id) AS playlist_count " +
+                "FROM song s JOIN playlist_songs ps ON s.id = ps.song_id " +
+                "GROUP BY s.id " +
+                "ORDER BY playlist_count DESC " +
+                "LIMIT 1";
+        Song song = null;
+
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            if (rs.next()) {
+                song = Song.builder()
+                        .id(rs.getInt("id"))
+                        .title(rs.getString("title"))
+                        .artist_id(rs.getInt("artist_id"))
+                        .build();
+
+                // Set the playlist count (popularity)
+//                song.setPlaylistCount(rs.getInt("playlist_count")); ---- Temporarily edited out to not casue error to show, waiting for playlistcount to be added to Song Class
+            }
+        } catch (SQLException e) {
+            System.err.println("Error retrieving most popular song: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        return song;
     }
 
     @Override

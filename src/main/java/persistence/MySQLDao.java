@@ -81,7 +81,13 @@ public class MySQLDao implements Closeable {
         return connection;
     }
 
-    public void freeConnection(Connection con){
+    /**
+     * Closes and frees a database connection
+     * @param con Connection to close
+     * @deprecated Use {@systemProperty close()} instead
+     */
+    @Deprecated(since = "26.10. 2024")
+    public void freeConnection(Connection con) {
         try {
             if (con != null) {
                 con.close();

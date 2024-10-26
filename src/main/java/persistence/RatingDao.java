@@ -18,13 +18,13 @@ public interface RatingDao {
      */
     boolean rateSong(Rating rating);
 
-    /**
-     * Updates an existing rating.
-     *
-     * @param rating the Rating object containing updated rating details
-     * @return true if the rating was updated successfully, false otherwise
-     */
-    boolean updateRating(Rating rating);
+//    /**
+//     * Updates an existing rating.
+//     *
+//     * @param rating the Rating object containing updated rating details
+//     * @return true if the rating was updated successfully, false otherwise
+//     */
+//    boolean updateRating(Rating rating);
 
     /**
      * Retrieves all ratings submitted by a user.

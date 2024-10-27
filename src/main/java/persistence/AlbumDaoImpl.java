@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+/// Dylan
 
 public class AlbumDaoImpl extends MySQLDao implements AlbumDao{
 
@@ -35,19 +36,17 @@ public class AlbumDaoImpl extends MySQLDao implements AlbumDao{
             ps.setInt(1, artistId);
             ResultSet resultSet = ps.executeQuery();
 
-            // Iterate through the result set and create Album objects
             while (resultSet.next()) {
                 Album album = new Album();
                 album.setId(resultSet.getInt("id"));
                 album.setTitle(resultSet.getString("title"));
                 album.setArtist_Id(resultSet.getInt("artist_id"));
-                albums.add(album); // Add the album to the list
+                albums.add(album);
             }
         } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
         }
         finally {
-            // Close the connection using the superclass method
             super.freeConnection(conn);
         }
 

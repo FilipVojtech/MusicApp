@@ -1,7 +1,7 @@
 DROP DATABASE IF EXISTS classicmodels;
 CREATE DATABASE IF NOT EXISTS classicmodels;
 
-USE classicmodels;
+USE test_classicmodels;
 
 CREATE TABLE app_user (
                           id INT AUTO_INCREMENT PRIMARY KEY,
@@ -72,4 +72,3 @@ CREATE TABLE user_likes (
                             FOREIGN KEY (user_id) REFERENCES app_user(id),
                             FOREIGN KEY (song_id) REFERENCES song(id)
 );
-

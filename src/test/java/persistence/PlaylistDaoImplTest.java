@@ -96,6 +96,7 @@ class PlaylistDaoImplTest {
         conn.close();
     }
 //
+
     /**
      * Tests adding songs to a playlist.
      */
@@ -140,40 +141,42 @@ class PlaylistDaoImplTest {
 //    void removeSongFromPlaylist() {
 //    }
 //
-/**
- * Tests retrieving a playlist by its ID.
- */
+
+    /**
+     * Tests retrieving a playlist by its ID.
+     */
     @Test
-void getPlaylistById() throws SQLException {
-    // Arrange
-    Connection conn = connectionSource.getConnection();
-    conn.setAutoCommit(false);
-    PlaylistDaoImpl playlistDao = new PlaylistDaoImpl(conn);
+    void getPlaylistById() throws SQLException {
+        // Arrange
+        Connection conn = connectionSource.getConnection();
+        conn.setAutoCommit(false);
+        PlaylistDaoImpl playlistDao = new PlaylistDaoImpl(conn);
 
-    Playlist newPlaylist = Playlist.builder()
-            .userId(2) // assume id 2 in db
-            .name("Workout Mix")
-            .isPublic(true)
-            .songs(null)
-            .build();
+        Playlist newPlaylist = Playlist.builder()
+                .userId(2) // assume id 2 in db
+                .name("Workout Mix")
+                .isPublic(true)
+                .songs(null)
+                .build();
 
-    boolean createResult = playlistDao.createPlaylist(newPlaylist);
-    assertTrue(createResult, "Playlist should be created successfully.");
-    int playlistId = newPlaylist.getPlaylistId();
-    assertTrue(playlistId > 0, "Generated Playlist ID should be greater than 0.");
+        boolean createResult = playlistDao.createPlaylist(newPlaylist);
+        assertTrue(createResult, "Playlist should be created successfully.");
+        int playlistId = newPlaylist.getPlaylistId();
+        assertTrue(playlistId > 0, "Generated Playlist ID should be greater than 0.");
 
-    Playlist fetchedPlaylist = playlistDao.getPlaylistById(playlistId);
+        Playlist fetchedPlaylist = playlistDao.getPlaylistById(playlistId);
 
-    assertNotNull(fetchedPlaylist, "Fetched Playlist should not be null.");
-    assertEquals(newPlaylist.getUserId(), fetchedPlaylist.getUserId(), "User IDs should match.");
-    assertEquals(newPlaylist.getName(), fetchedPlaylist.getName(), "Playlist names should match.");
-    assertEquals(newPlaylist.isPublic(), fetchedPlaylist.isPublic(), "Visibility should match.");
-    assertNull(fetchedPlaylist.getSongs(), "Songs list should be null initially.");
+        assertNotNull(fetchedPlaylist, "Fetched Playlist should not be null.");
+        assertEquals(newPlaylist.getUserId(), fetchedPlaylist.getUserId(), "User IDs should match.");
+        assertEquals(newPlaylist.getName(), fetchedPlaylist.getName(), "Playlist names should match.");
+        assertEquals(newPlaylist.isPublic(), fetchedPlaylist.isPublic(), "Visibility should match.");
+        assertNull(fetchedPlaylist.getSongs(), "Songs list should be null initially.");
 
-    conn.commit();
-    conn.close();
-}
+        conn.commit();
+        conn.close();
+    }
 //
+
     /**
      * Tests retrieving all playlists for a specific user.
      */
@@ -211,11 +214,37 @@ void getPlaylistById() throws SQLException {
         conn.close();
     }
 //
-//    @Test
-//    void getPublicPlaylists() {
-//    }
-//
-//    @Test
-//    void getSongsInPlaylist() {
-//    }
+
+    /**
+     * Tests retrieving all public playlists.
+     */
+    @Test
+    void getPublicPlaylists() throws SQLException {
+        // Arrange
+        Connection conn = connectionSource.getConnection();
+        conn.setAutoCommit(false); // Start transaction
+        PlaylistDaoImpl playlistDao = new PlaylistDaoImpl(conn);
+
+        Playlist publicPlaylist = Playlist.builder()
+                .userId(1) // assume id 1 exists
+                .name("Public Playlist")
+                .isPublic(true)
+                .songs(null)
+                .build();
+
+        boolean createResult = playlistDao.createPlaylist(publicPlaylist);
+        assertTrue(createResult, "Public Playlist should be created successfully.");
+        int publicId = publicPlaylist.getPlaylistId();
+        assertTrue(publicId > 0, "Public Playlist ID should be greater than 0.");
+
+        List<Playlist> publicPlaylists = playlistDao.getPublicPlaylists();
+
+        assertNotNull(publicPlaylists, "Public Playlists should not be null.");
+        assertFalse(publicPlaylists.isEmpty(), "Public Playlists should contain at least one playlist.");
+
+        conn.commit();
+        conn.close();
     }
+
+
+}

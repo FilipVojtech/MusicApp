@@ -1,8 +1,8 @@
 package persistence;
 
 import business.Playlist;
-import org.junit.jupiter.api.Test;
 import business.Song;
+import org.junit.jupiter.api.Test;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -11,7 +11,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class PlaylistDaoImplTest {
-    private MySQLDao connectionSource = new MySQLDao("database_test.properties");
+    private MySQLDao connectionSource = new MySQLDao("resources/database_test.properties");
 
 
     /*
@@ -124,26 +124,89 @@ class PlaylistDaoImplTest {
         assertTrue(addResult1, "Song 1 should be added successfully.");
         assertTrue(addResult2, "Song 2 should be added successfully.");
 
-        // check if songs are in playlst
         List<Song> songsInPlaylist = playlistDao.getSongsInPlaylist(playlistId);
         assertNotNull(songsInPlaylist, "Songs list should not be null.");
         assertEquals(2, songsInPlaylist.size(), "Playlist should contain two songs.");
 
+
         conn.commit();
         conn.close();
-    }  }
+    }
 //
 //    @Test
 //    void removeSongFromPlaylist() {
 //    }
 //
-//    @Test
-//    void getPlaylistById() {
-//    }
+/**
+ * Tests retrieving a playlist by its ID.
+ */
+    @Test
+void getPlaylistById() throws SQLException {
+    // Arrange
+    Connection conn = connectionSource.getConnection();
+    conn.setAutoCommit(false);
+    PlaylistDaoImpl playlistDao = new PlaylistDaoImpl(conn);
+
+    Playlist newPlaylist = Playlist.builder()
+            .userId(2) // assume id 2 in db
+            .name("Workout Mix")
+            .isPublic(true)
+            .songs(null)
+            .build();
+
+    boolean createResult = playlistDao.createPlaylist(newPlaylist);
+    assertTrue(createResult, "Playlist should be created successfully.");
+    int playlistId = newPlaylist.getPlaylistId();
+    assertTrue(playlistId > 0, "Generated Playlist ID should be greater than 0.");
+
+    Playlist fetchedPlaylist = playlistDao.getPlaylistById(playlistId);
+
+    assertNotNull(fetchedPlaylist, "Fetched Playlist should not be null.");
+    assertEquals(newPlaylist.getUserId(), fetchedPlaylist.getUserId(), "User IDs should match.");
+    assertEquals(newPlaylist.getName(), fetchedPlaylist.getName(), "Playlist names should match.");
+    assertEquals(newPlaylist.isPublic(), fetchedPlaylist.isPublic(), "Visibility should match.");
+    assertNull(fetchedPlaylist.getSongs(), "Songs list should be null initially.");
+
+    conn.commit();
+    conn.close();
+}
 //
-//    @Test
-//    void getUserPlaylists() {
-//    }
+    /**
+     * Tests retrieving all playlists for a specific user.
+     */
+    @Test
+    void getUserPlaylists() throws SQLException {
+        Connection conn = connectionSource.getConnection();
+        conn.setAutoCommit(false);
+        PlaylistDaoImpl playlistDao = new PlaylistDaoImpl(conn);
+
+        // make 2 playlists for user
+        Playlist playlist1 = Playlist.builder()
+                .userId(4) // assume id 4 exist in db
+                .name("Party Hits")
+                .isPublic(true)
+                .songs(null)
+                .build();
+
+        Playlist playlist2 = Playlist.builder()
+                .userId(4) // same id as before
+                .name("Relaxing Tunes")
+                .isPublic(false)
+                .songs(null)
+                .build();
+
+        boolean createResult1 = playlistDao.createPlaylist(playlist1);
+        boolean createResult2 = playlistDao.createPlaylist(playlist2);
+        assertTrue(createResult1, "First Playlist should be created successfully.");
+        assertTrue(createResult2, "Second Playlist should be created successfully.");
+        int playlistId1 = playlist1.getPlaylistId();
+        int playlistId2 = playlist2.getPlaylistId();
+        assertTrue(playlistId1 > 0, "First Playlist ID should be greater than 0.");
+        assertTrue(playlistId2 > 0, "Second Playlist ID should be greater than 0.");
+
+        conn.commit();
+        conn.close();
+    }
 //
 //    @Test
 //    void getPublicPlaylists() {

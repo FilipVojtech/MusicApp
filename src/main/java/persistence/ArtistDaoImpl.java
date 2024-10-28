@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+/// Dylan
 
 public class ArtistDaoImpl extends MySQLDao implements ArtistDao {
 
@@ -24,6 +25,7 @@ public class ArtistDaoImpl extends MySQLDao implements ArtistDao {
      *
      * @return a list of all artists.
      */
+
     @Override
     public List<Artist> getAllArtists() {
         List<Artist> artists = new ArrayList<>();

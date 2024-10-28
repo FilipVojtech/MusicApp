@@ -11,10 +11,13 @@ import lombok.*;
 @AllArgsConstructor
 @Getter
 @Setter
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+
 public class Rating {
     /**
      *  unique identifier for the rating.
      */
+    @EqualsAndHashCode.Include
     private int ratingId;
 
     /**

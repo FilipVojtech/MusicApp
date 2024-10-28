@@ -134,7 +134,7 @@ public class RatingDaoImpl extends MySQLDao implements RatingDao{
                         .build();
 
                 // Set the playlist count (popularity)
-//                song.setPlaylistCount(rs.getInt("playlist_count")); ---- Temporarily edited out to not casue error to show, waiting for playlistcount to be added to Song Class
+                song.setPlaylistCount(rs.getInt("playlist_count")); //---- Temporarily edited out to not casue error to show, waiting for playlistcount to be added to Song Class
             }
         } catch (SQLException e) {
             System.err.println("Error retrieving most popular song: " + e.getMessage());

@@ -13,10 +13,13 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+
 public class Playlist {
     /**
      *  unique identifier for the playlist.
      */
+    @EqualsAndHashCode.Include
     private int playlistId;
 
     /**

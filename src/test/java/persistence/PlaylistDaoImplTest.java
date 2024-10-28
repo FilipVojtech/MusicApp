@@ -47,6 +47,9 @@ class PlaylistDaoImplTest {
         assertEquals(newPlaylist.isPublic(), insertedPlaylist.isPublic(), "Visibility should match.");
         assertNull(insertedPlaylist.getSongs(), "Songs list should be null initially.");
 
+        // use this to test equals() if just looking at playlistid
+        assertEquals(newPlaylist.getPlaylistId(), insertedPlaylist.getPlaylistId(), "Playlists should have the same ID.");
+
         conn.commit();
     }
 

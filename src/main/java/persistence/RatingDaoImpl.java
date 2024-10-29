@@ -7,6 +7,10 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Alex Clinton
+ */
+
 public class RatingDaoImpl extends MySQLDao implements RatingDao{
     public RatingDaoImpl(Connection conn) {
         super(conn);

@@ -6,6 +6,10 @@ import business.Song;
 import java.util.List;
 
 /**
+ * @author Alex Clinton
+ */
+
+/**
  * Interface defining the data access methods for Playlist operations.
  */
 public interface PlaylistDao {

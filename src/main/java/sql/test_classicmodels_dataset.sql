@@ -1,3 +1,8 @@
+DROP DATABASE IF EXISTS test_classicmodels;
+CREATE DATABASE IF NOT EXISTS test_classicmodels;
+
+USE test_classicmodels;
+
 INSERT INTO artist (name) VALUES
                               ('The Beatles'),
                               ('Led Zeppelin'),

@@ -29,9 +29,10 @@ public class UserDaoImpl extends MySQLDao implements UserDao {
 
         try (Connection con = super.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setString(0, user.getEmail());
-            ps.setString(1, user.getPasswordHash());
-            ps.setString(2, user.getDisplayName());
+
+            ps.setString(1, user.getEmail());
+            ps.setString(2, user.getPassword());
+            ps.setString(3, user.getDisplayName());
 
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {

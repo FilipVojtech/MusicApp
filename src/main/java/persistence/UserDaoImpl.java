@@ -26,6 +26,16 @@ public class UserDaoImpl extends MySQLDao implements UserDao {
     @Override
     public boolean createUser(@NonNull User user) {
         final var sql = "INSERT INTO app_user (email, password, display_name) VALUE (?, ?, ?)";
+    @Override
+    public boolean createUser(@NonNull User user) throws EmailAddressAlreadyUsed {
+        final var sql = "INSERT INTO users (email, password, display_name) VALUE (?, ?, ?)";
+
+        try {
+            if (getUserByEmail(user.getEmail()) != null)
+                throw new EmailAddressAlreadyUsed("User with this email address already exists.");
+        } catch (RecordNotFound ignored) {
+        }
+
 
         try (Connection con = super.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {

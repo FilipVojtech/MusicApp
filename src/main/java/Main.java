@@ -1,4 +1,4 @@
-import console.Console;
+import console.ConsoleController;
 
 import java.util.Arrays;
 
@@ -7,8 +7,8 @@ public class Main {
 //        Test.doTest();
 
         if (Arrays.asList(args).contains("-D"))
-            Console.doInterface(true);
+            ConsoleController.doInterface(true);
         else
-            Console.doInterface();
+            ConsoleController.doInterface();
     }
 }

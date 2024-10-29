@@ -3,7 +3,7 @@ package console;
 import session.Session;
 import util.Input;
 
-public class Console {
+public class ConsoleController {
     public static void doInterface(boolean isDebugging) {
         TextInterface tInterface = new GeneralInterface();
 

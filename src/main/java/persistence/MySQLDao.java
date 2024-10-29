@@ -1,6 +1,5 @@
 package persistence;
 
-import java.io.Closeable;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -9,7 +8,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
-public class MySQLDao implements Closeable {
+public class MySQLDao implements AutoCloseable {
     private Properties properties;
     private Connection conn = null;
 

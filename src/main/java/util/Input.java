@@ -53,6 +53,11 @@ public class Input {
         return string(prompt, true);
     }
 
+    /**
+     * Gets a valid email address from the user
+     *
+     * @return An email address
+     */
     public static String email() {
         Pattern pattern = Pattern.compile("[.\\S]+@[.\\S]+\\.[\\w]{2,3}");
 

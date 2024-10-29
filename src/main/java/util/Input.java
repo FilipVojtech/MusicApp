@@ -7,6 +7,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
+ * Except for the string methods, all input is taken on the same line.
+ *
  * @author Filip Vojtěch
  */
 public class Input {

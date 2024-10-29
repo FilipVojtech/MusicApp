@@ -1,5 +1,7 @@
 package util;
 
+import java.text.MessageFormat;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -72,5 +74,53 @@ public class Input {
                 System.out.println("Please enter an email address.");
             }
         }
+    }
+
+    /**
+     * Prompt the user for an integer.
+     *
+     * @param prompt To display to the user.
+     * @param min    Minimum value of the number (inclusive).
+     * @param max    Maximum value of the number (exclusive).
+     * @return A valid integer.
+     */
+    public static int integer(String prompt, int min, int max) {
+        while (true) {
+            System.out.println(prompt);
+            try {
+                int input = sc.nextInt();
+
+                if (input < min || input >= max) {
+                    System.out.println(MessageFormat.format("Number must be between {0} and {1}", min, max + 1));
+                    continue;
+                }
+
+                return input;
+            } catch (InputMismatchException e) {
+                System.out.println("Please enter a number.");
+                sc.nextLine();
+            }
+        }
+    }
+
+    /**
+     * Prompt the user for an integer.
+     *
+     * @param prompt To display to the user.
+     * @param min    Minimum value of the number (inclusive).
+     * @return A valid integer.
+     */
+    public static int integer(String prompt, int min) {
+        return integer(prompt, min, Integer.MAX_VALUE);
+    }
+
+    /**
+     * Prompt the user for an integer.
+     *
+     * @param prompt To display to the user.
+     * @return A valid integer.
+     */
+    public static int integer(String prompt) {
+        return integer(prompt, Integer.MIN_VALUE, Integer.MAX_VALUE);
     }
 }

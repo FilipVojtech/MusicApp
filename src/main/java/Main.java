@@ -1,5 +1,14 @@
+import console.Console;
+
+import java.util.Arrays;
+
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hi :D");
+//        Test.doTest();
+
+        if (Arrays.asList(args).contains("-D"))
+            Console.doInterface(true);
+        else
+            Console.doInterface();
     }
 }

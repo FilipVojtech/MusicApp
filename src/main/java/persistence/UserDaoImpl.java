@@ -47,6 +47,9 @@ public class UserDaoImpl extends MySQLDao implements UserDao {
         }
         final var sql = "UPDATE users SET display_name = ?, email = ? WHERE id = ?;";
 
+        // todo: Check that new email address is unique
+        //     Allows the user to change their email address to someone else's
+
         try (Connection con = super.getConnection();
              PreparedStatement statement = con.prepareStatement(sql)) {
             statement.setString(1, newUserData.getDisplayName());

@@ -6,7 +6,6 @@ import lombok.*;
  * @author Filip Vojtěch
  */
 @AllArgsConstructor
-@RequiredArgsConstructor
 @Data
 @Builder
 public class User {
@@ -14,6 +13,6 @@ public class User {
     private @NonNull String email;
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    private final @NonNull String passwordHash;
-    private String displayName;
+    private final String password;
+    private @NonNull String displayName;
 }

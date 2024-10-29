@@ -4,6 +4,9 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * @author Filip Vojtěch
+ */
 public class Input {
     private static final Scanner sc = new Scanner(System.in);
 

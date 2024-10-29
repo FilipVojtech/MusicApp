@@ -15,6 +15,14 @@ public class Input {
         return sc.nextLine();
     }
 
+    /**
+     * Prompt the user for a password.
+     * For debug purposes only.</br>
+     * <strong>DO NOT USE IN PRODUCTION CODE!!!</strong></br>
+     * It is not secure.
+     *
+     * @return Character array of the password
+     */
     public static char[] password() {
         System.out.print("Password: ");
         return sc.nextLine().toCharArray();

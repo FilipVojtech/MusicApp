@@ -1,8 +1,15 @@
 package console;
 
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.Setter;
 import session.Session;
 
 public abstract class TextInterface {
+    @Getter
+    @Setter
+    private @NonNull InterfaceType nextInterface = InterfaceType.General;
+
     public TextInterface() {
         isDebugging = false;
     }

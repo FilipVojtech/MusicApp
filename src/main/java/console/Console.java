@@ -5,12 +5,17 @@ import util.Input;
 
 public class Console {
     public static void doInterface(boolean isDebugging) {
-        TextInterface tInterface;
+        TextInterface tInterface = new GeneralInterface();
 
         while (true) {
-            if (Session.IsLoggedIn()) {
-                tInterface = new GeneralInterface();
-            } else {
+            // Choose interface to display
+            tInterface = switch (tInterface.getNextInterface()) {
+                case PasswordAuth -> new PasswordAuthInterface();
+                default -> new GeneralInterface();
+            };
+
+            // If not logged in, force login interface
+            if (!Session.IsLoggedIn()) {
                 tInterface = new PasswordAuthInterface(isDebugging);
             }
 

@@ -39,7 +39,10 @@ public class PasswordAuthInterface extends TextInterface {
                 if (user != null) Session.setUser(user);
             }
             case "0" -> exitProgram();
-            default -> System.out.println("Invalid choice. Please try again.");
+            default -> {
+                System.out.println("Invalid choice. Please try again.");
+                setNextInterface(InterfaceType.PasswordAuth);
+            }
         }
     }
 

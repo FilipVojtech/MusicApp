@@ -13,7 +13,10 @@ public class GeneralInterface extends TextInterface {
     public void handleCommand(String choice) {
         switch (choice) {
             case "0" -> logout();
-            default -> System.out.println("Invalid choice. Please try again.");
+            default -> {
+                System.out.println("Invalid choice. Please try again.");
+                setNextInterface(InterfaceType.General);
+            }
         }
     }
 }

@@ -6,6 +6,8 @@ import lombok.NonNull;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.text.MessageFormat;
+
 
 /**
  * @author Filip Vojtěch
@@ -24,8 +26,59 @@ public class UserDaoImpl extends MySQLDao implements UserDao {
     }
 
     @Override
-    public boolean createUser(@NonNull User user) {
-        final var sql = "INSERT INTO app_user (email, password, display_name) VALUE (?, ?, ?)";
+    public User getUser(@NonNull int id) throws RecordNotFound {
+        final var sql = "SELECT * FROM users WHERE id = ?";
+
+        try (Connection con = super.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, id);
+
+            final var result = ps.executeQuery();
+
+            if (result.next()) {
+                return new User(
+                        result.getInt("id"),
+                        result.getString("email"),
+                        result.getString("password"),
+                        result.getString("display_name")
+                );
+            } else {
+                throw new RecordNotFound(MessageFormat.format("Couldn''t find user by that ID ({0})", id));
+            }
+        } catch (SQLException e) {
+            System.out.println("Error while fetching user.");
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public User getUserByEmail(@NonNull String email) throws RecordNotFound {
+        final var sql = "SELECT * FROM users WHERE email = ?";
+
+        try (Connection con = super.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, email);
+
+            final var result = ps.executeQuery();
+
+            if (result.next()) {
+                User user =  new User(
+                        result.getInt("id"),
+                        result.getString("email"),
+                        result.getString("password"),
+                        result.getString("display_name")
+                );
+                return user;
+            } else {
+                throw new RecordNotFound(MessageFormat.format("Couldn''t find user with that email ({0})", email));
+            }
+        } catch (SQLException e) {
+            System.out.println("Error while fetching user.");
+        }
+        return null;
+    }
+
     @Override
     public boolean createUser(@NonNull User user) throws EmailAddressAlreadyUsed {
         final var sql = "INSERT INTO users (email, password, display_name) VALUE (?, ?, ?)";

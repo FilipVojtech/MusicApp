@@ -86,7 +86,7 @@ public class Input {
      */
     public static int integer(String prompt, int min, int max) {
         while (true) {
-            System.out.println(prompt);
+            System.out.print(prompt);
             try {
                 int input = sc.nextInt();
 

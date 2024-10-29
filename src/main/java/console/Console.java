@@ -7,9 +7,13 @@ public class Console {
     public static void doInterface(boolean isDebugging) {
         TextInterface tInterface = new GeneralInterface();
 
+        //noinspection InfiniteLoopStatement
         while (true) {
             // Choose interface to display
             tInterface = switch (tInterface.getNextInterface()) {
+                case General ->
+                    //noinspection DuplicateBranchesInSwitch
+                        new GeneralInterface();
                 case PasswordAuth -> new PasswordAuthInterface();
                 default -> new GeneralInterface();
             };

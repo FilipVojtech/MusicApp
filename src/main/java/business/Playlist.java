@@ -1,5 +1,7 @@
 package business;
-
+/**
+ * @author Alex Clinton
+ */
 import lombok.*;
 
 import java.util.List;

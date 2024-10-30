@@ -15,6 +15,8 @@ public class ConsoleController {
                     //noinspection DuplicateBranchesInSwitch
                         new GeneralInterface();
                 case PasswordAuth -> new PasswordAuthInterface();
+                case PlaylistController -> new PlaylistController();
+                case RatingController -> new RatingController();
                 default -> new GeneralInterface();
             };
 

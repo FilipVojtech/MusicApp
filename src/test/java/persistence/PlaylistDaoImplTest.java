@@ -9,6 +9,9 @@ import java.sql.SQLException;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+/**
+ * @author Alex Clinton
+ */
 
 class PlaylistDaoImplTest {
     private MySQLDao connectionSource = new MySQLDao("resources/database_test.properties");

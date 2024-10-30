@@ -55,4 +55,26 @@ class SessionTest {
     void getUser_NoUser() {
         assertNull(Session.getUser(), "Expected user was not null");
     }
+
+    @Test
+    void setUser_ValidUser() {
+        User expectedUser = new User(1, "test@test.com", "Password", "Test User");
+        Session.setUser(testUser);
+        assertEquals(Session.getUser(), expectedUser, "User was not set successfully");
+    }
+
+    @Test
+    void setUser_ChangeUser() {
+        Session.setUser(testUser);
+
+        User newUser = new User(2, "test2@test.com", "Password", "Test User 2");
+        User expectedUser =  new User(2, "test2@test.com", "Password", "Test User 2");
+        Session.setUser(newUser);
+        assertEquals(Session.getUser(), expectedUser, "User was not set successfully");
+    }
+
+    @Test
+    void setUser_NullUser() {
+        assertThrows(NullPointerException.class, () -> Session.setUser(null), "Setting null user did not throw");
+    }
 }

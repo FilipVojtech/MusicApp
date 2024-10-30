@@ -28,7 +28,8 @@ class UserDaoImplTest {
     }
 
     @AfterEach
-    void tearDown() {
+    void tearDown() throws SQLException {
+        conn.rollback();
         mysql.close();
     }
 

@@ -27,4 +27,19 @@ class SessionTest {
         boolean result = Session.IsLoggedIn();
         assertTrue(result, "isLoggedIn returned false, expected was true");
     }
+
+    @Test
+    void clearSession_NoPriorUser() {
+        assertNull(Session.getUser(), "Unexpected user in Session");
+        Session.clearSession();
+        assertNull(Session.getUser(), "Session was not cleared");
+    }
+
+    @Test
+    void clearSession_WithUser() {
+        assertNull(Session.getUser(), "Unexpected user in Session");
+        Session.setUser(testUser);
+        Session.clearSession();
+        assertNull(Session.getUser(), "Session was not cleared");
+    }
 }

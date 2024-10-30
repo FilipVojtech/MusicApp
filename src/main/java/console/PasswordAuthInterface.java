@@ -51,6 +51,11 @@ public class PasswordAuthInterface extends TextInterface {
         }
     }
 
+    /**
+     * Authenticates and authorizes the user.
+     *
+     * @return Initialised {@link User} object. Null when user could not be initialised or found.
+     */
     private User doAuth() {
         String email = Input.email();
         char[] passwordArray = getPassword();
@@ -77,6 +82,11 @@ public class PasswordAuthInterface extends TextInterface {
         }
     }
 
+    /**
+     * Registers a new valid user.
+     *
+     * @return Initialised {@link User} object. Null when user could not be created.
+     */
     private User register() {
         // Part 1 card
         getCreditCard();
@@ -117,6 +127,11 @@ public class PasswordAuthInterface extends TextInterface {
         return null;
     }
 
+    /**
+     * Prompts the user for a password.
+     *
+     * @return Character array of the character from the password
+     */
     private char[] getPassword() {
         Console console = System.console();
 
@@ -153,6 +168,11 @@ public class PasswordAuthInterface extends TextInterface {
         }
     }
 
+    /**
+     * Retrieves a credit card from the user
+     *
+     * @return Valid {@link CreditCard} object which details are current.
+     */
     private CreditCard getCreditCard() {
         while (true) {
             CreditCard card;

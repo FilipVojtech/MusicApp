@@ -1,7 +1,9 @@
 package business;
 
 import lombok.*;
-
+/**
+ * @author Dylan Habis
+ */
 @Data
 @Builder
 @NoArgsConstructor

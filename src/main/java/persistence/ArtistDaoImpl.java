@@ -8,8 +8,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-/// Dylan
-
+/**
+ * @author Dylan Habis
+ */
 public class ArtistDaoImpl extends MySQLDao implements ArtistDao {
 
     public ArtistDaoImpl(Connection conn) {

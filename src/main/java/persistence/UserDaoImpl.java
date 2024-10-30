@@ -106,27 +106,27 @@ public class UserDaoImpl extends MySQLDao implements UserDao {
         return false;
     }
 
-    @Override
-    public boolean updateUser(@NonNull User newUserData) {
-        if (newUserData.getId() == 0) {
-            System.out.println("Cannot update user. ID is not set.");
-        }
-        final var sql = "UPDATE users SET display_name = ?, email = ? WHERE id = ?;";
-
-        // todo: Check that new email address is unique
-        //     Allows the user to change their email address to someone else's
-
-        try (Connection con = super.getConnection();
-             PreparedStatement statement = con.prepareStatement(sql)) {
-            statement.setString(1, newUserData.getDisplayName());
-            statement.setString(2, newUserData.getEmail());
-            statement.setInt(3, newUserData.getId());
-
-            return statement.executeUpdate() > 0;
-
-        } catch (SQLException e) {
-            System.out.println("Couldn't update user");
-        }
-        return false;
-    }
+//    @Override
+//    public boolean updateUser(@NonNull User newUserData) {
+//        if (newUserData.getId() == 0) {
+//            System.out.println("Cannot update user. ID is not set.");
+//        }
+//        final var sql = "UPDATE app_user SET display_name = ?, email = ? WHERE id = ?;";
+//
+//        // todo: Check that new email address is unique
+//        //     Allows the user to change their email address to someone else's
+//
+//        try (Connection con = super.getConnection();
+//             PreparedStatement statement = con.prepareStatement(sql)) {
+//            statement.setString(1, newUserData.getDisplayName());
+//            statement.setString(2, newUserData.getEmail());
+//            statement.setInt(3, newUserData.getId());
+//
+//            return statement.executeUpdate() > 0;
+//
+//        } catch (SQLException e) {
+//            System.out.println("Couldn't update user");
+//        }
+//        return false;
+//    }
 }

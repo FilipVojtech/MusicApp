@@ -68,10 +68,18 @@ class UserDaoImplTest {
 
     @Test
     void getUserByEmail_ExistingEmail() {
-        try (UserDao userDao = new UserDaoImpl(conn)) {
-        } catch (Exception e) {
-            fail("Could not init UserDao");
-        }
+        String userEmail = "user1@example.com";
+        UserDao userDao = new UserDaoImpl(conn);
+        User expectedUser = new User(
+                1,
+                "user1@example.com",
+                "$2a$14$Sci/QKCO4xEAqh2O3/PSk.XGWdEF.Jxy/AB0cDCkGWu19Gz1d3gPq",
+                "User One"
+        );
+        User user = userDao.getUserByEmail(userEmail);
+
+        assertNotNull(user);
+        assertEquals(expectedUser, user);
     }
 
     @Test

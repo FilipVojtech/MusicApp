@@ -160,13 +160,14 @@ public class PasswordAuthInterface extends TextInterface {
         while (true) {
             String email = Input.email();
 
-            try {
-                UserDao userDao = new UserDaoImpl();
+            try (UserDao userDao = new UserDaoImpl()) {
                 userDao.getUserByEmail(email);
                 System.out.println("Email already taken.");
                 continue;
             } catch (RecordNotFound ignore) {
                 return email;
+            } catch (Exception e) {
+                throw new RuntimeException("Something went wrong while checking email.");
             }
         }
     }

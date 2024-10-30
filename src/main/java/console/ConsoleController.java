@@ -22,7 +22,12 @@ public class ConsoleController {
                 case PasswordAuth -> new PasswordAuthInterface();
                 case PlaylistController -> new PlaylistController();
                 case RatingController -> new RatingController();
+                case ArtistController -> new ArtistController();
+                case AlbumController -> new AlbumController();
+                case SongController -> new SongController();
+
                 default -> new GeneralInterface();
+
             };
 
             // If not logged in, force login interface

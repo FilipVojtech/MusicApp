@@ -37,7 +37,7 @@ public class Input {
      */
     public static String command() {
         System.out.print("> ");
-        return sc.nextLine();
+        return handleStringBeforeReturn(sc.nextLine());
     }
 
     /**
@@ -65,7 +65,7 @@ public class Input {
         if (!inputOnSameLine) {
             System.out.print('\n');
         }
-        return sc.nextLine();
+        return handleStringBeforeReturn(sc.nextLine());
     }
 
     /**
@@ -92,7 +92,7 @@ public class Input {
             Matcher matcher = pattern.matcher(email);
 
             if (matcher.find()) {
-                return email;
+                return handleStringBeforeReturn(email);
             } else {
                 System.out.println("Please enter an email address.");
             }
@@ -258,7 +258,7 @@ public class Input {
                 System.out.println("Please enter a CVV.");
                 continue;
             }
-            return input;
+            return handleStringBeforeReturn(input);
         }
     }
 }

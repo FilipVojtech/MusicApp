@@ -8,7 +8,7 @@ import persistence.exceptions.RecordNotFound;
 /**
  * @author Filip Vojtěch
  */
-public interface UserDao {
+public interface UserDao extends AutoCloseable {
     /**
      * Retrieves a user by their ID
      * @param id ID to look up by

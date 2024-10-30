@@ -125,4 +125,27 @@ public class Input {
     public static int integer(String prompt) {
         return integer(prompt, Integer.MIN_VALUE, Integer.MAX_VALUE);
     }
+
+    /**
+     * Prompts the user for cvv number
+     * @param prompt Prompt to display to the user
+     * @return Valid CVV number.
+     */
+    public static String cvv(String prompt) {
+        while (true) {
+            System.out.print(prompt);
+            String input = sc.nextLine();
+            if (input.length() != 3) {
+                System.out.println("CVV invalid format.");
+                continue;
+            }
+            try {
+                Integer.parseInt(input);
+            } catch (NumberFormatException e) {
+                System.out.println("Please enter a CVV.");
+                continue;
+            }
+            return input;
+        }
+    }
 }

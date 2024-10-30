@@ -1,11 +1,12 @@
 package business;
 
+import business.exceptions.InvalidCardNumberException;
+import business.exceptions.UnsupportedCardIssuerException;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.util.Scanner;
 
 /**
  * @author Filip Vojtěch

@@ -1,11 +1,11 @@
 package console;
 
 import business.CreditCard;
-import business.InvalidCardNumberException;
-import business.UnsupportedCardIssuerException;
+import business.exceptions.InvalidCardNumberException;
+import business.exceptions.UnsupportedCardIssuerException;
 import business.User;
 import org.mindrot.jbcrypt.BCrypt;
-import persistence.RecordNotFound;
+import persistence.exceptions.RecordNotFound;
 import persistence.UserDao;
 import persistence.UserDaoImpl;
 import session.Session;

@@ -2,6 +2,8 @@ package persistence;
 
 import business.User;
 import lombok.NonNull;
+import persistence.exceptions.EmailAddressAlreadyUsed;
+import persistence.exceptions.RecordNotFound;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

@@ -59,6 +59,14 @@ class UserDaoImplTest {
     }
 
     @Test
+    void getUser_ZeroId() {
+        int userId = 0;
+        UserDao userDao = new UserDaoImpl(conn);
+
+        assertThrows(RecordNotFound.class, () -> userDao.getUser(userId));
+    }
+
+    @Test
     void getUserByEmail_ExistingEmail() {
         try (UserDao userDao = new UserDaoImpl(conn)) {
         } catch (Exception e) {

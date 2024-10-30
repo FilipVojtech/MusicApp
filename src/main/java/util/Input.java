@@ -229,7 +229,9 @@ public class Input {
     }
 
     /**
-     * Prompts the user for a card expiration date.
+     * Prompts the user for a card expiration date.</br>
+     * This method does not handle expiration date in the past.
+     * For better handling on expired date use the other <code>cardExpirationDate</code> method.
      *
      * @param prompt Prompt to display to the user.
      * @return Valid card expiration date.

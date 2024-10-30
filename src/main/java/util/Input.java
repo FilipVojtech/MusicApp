@@ -19,6 +19,22 @@ import java.util.regex.Pattern;
 public class Input {
     private static final Scanner sc = new Scanner(System.in);
 
+    /**
+     * Handles string before below public methods return
+     *
+     * @param string String to be handled
+     * @return Handled string
+     */
+    private static String handleStringBeforeReturn(String string) {
+        string = string.trim();
+        return string;
+    }
+
+    /**
+     * Prompts the user for a command.
+     *
+     * @return Command by the user
+     */
     public static String command() {
         System.out.print("> ");
         return sc.nextLine();

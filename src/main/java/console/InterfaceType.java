@@ -5,5 +5,8 @@ public enum InterfaceType {
     General,
     PlaylistController,
     RatingController,
+    AlbumController,
+    ArtistController,
+    SongController,
 
 }

@@ -91,6 +91,14 @@ class UserDaoImplTest {
     }
 
     @Test
+    void getUserByEmail_InvalidEmail() {
+        String email = "oh@no";
+        UserDao userDao = new UserDaoImpl(conn);
+
+        assertThrows(RecordNotFound.class, () -> userDao.getUserByEmail(email));
+    }
+
+    @Test
     void createUser_1() {
         try (UserDao userDao = new UserDaoImpl(conn)) {
         } catch (Exception e) {

@@ -203,7 +203,7 @@ public class PasswordAuthInterface extends TextInterface {
                 System.out.println("Unsupported card issuer. Please use one of these cards:");
                 System.out.println("  - Visa");
                 System.out.println("  - Master Card");
-                System.out.println("  - American Express");
+//                System.out.println("  - American Express");
                 continue;
             }
             return card;

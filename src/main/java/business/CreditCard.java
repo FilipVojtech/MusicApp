@@ -18,7 +18,7 @@ public class CreditCard {
     private enum CardIssuer {
         MasterCard("Master Card"),
         Visa("Visa"),
-        AmericanExpress("American Express");
+        /*AmericanExpress("American Express")*/;
 
         private final String issuerName;
 
@@ -40,9 +40,9 @@ public class CreditCard {
                 return Visa;
             } else if (cardNumberString.startsWith("2") || cardNumberString.startsWith("5")) {
                 return MasterCard;
-            } else if (cardNumberString.startsWith("3")) {
+            } /*else if (cardNumberString.startsWith("3")) {
                 return AmericanExpress;
-            }
+            }*/
 
             throw new UnsupportedCardIssuerException("The card issuer is not supported at the moment");
         }

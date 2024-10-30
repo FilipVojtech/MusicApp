@@ -42,4 +42,17 @@ class SessionTest {
         Session.clearSession();
         assertNull(Session.getUser(), "Session was not cleared");
     }
+
+    @Test
+    void getUser_WithUser() {
+        Session.setUser(testUser);
+        User expected = new User(1, "test@test.com", "Password", "Test User");
+
+        assertEquals(expected, Session.getUser(), "Expected user was different from actual");
+    }
+
+    @Test
+    void getUser_NoUser() {
+        assertNull(Session.getUser(), "Expected user was not null");
+    }
 }

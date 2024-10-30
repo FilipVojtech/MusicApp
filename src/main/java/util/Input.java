@@ -1,5 +1,6 @@
 package util;
 
+import java.math.BigInteger;
 import java.text.MessageFormat;
 import java.time.LocalDate;
 import java.util.InputMismatchException;
@@ -125,6 +126,33 @@ public class Input {
      */
     public static int integer(String prompt) {
         return integer(prompt, Integer.MIN_VALUE, Integer.MAX_VALUE);
+    }
+
+    /**
+     * Prompts the user for a card number
+     *
+     * @param prompt Prompt to show to the user
+     * @return 16 digits long card number, not validated
+     */
+    public static BigInteger cardNumber(String prompt) {
+        while (true) {
+            String input = string(prompt, false);
+
+            input = input.replace("-", "");
+            input = input.replace(" ", "");
+
+            if (input.length() != 16) {
+                System.out.println("Incorrect number format [xxxx xxxx xxxx xxxx]");
+                continue;
+            }
+
+            try {
+                return new BigInteger(input);
+            } catch (NumberFormatException e) {
+                System.out.println("Incorrect number format [xxxx xxxx xxxx xxxx]");
+                continue;
+            }
+        }
     }
 
     /**

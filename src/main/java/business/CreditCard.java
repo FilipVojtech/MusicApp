@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 
+import java.math.BigInteger;
 import java.time.LocalDate;
 
 /**
@@ -29,8 +30,8 @@ public class CreditCard {
             return issuerName;
         }
 
-        public static CardIssuer fromNumber(int cardNumber) throws UnsupportedCardIssuerException {
-            var cardNumberString = Integer.toString(cardNumber);
+        public static CardIssuer fromNumber(BigInteger cardNumber) throws UnsupportedCardIssuerException {
+            var cardNumberString = cardNumber.toString();
 
             // Visa starts with 4
             // Master Card starts with 2 or 5
@@ -47,19 +48,24 @@ public class CreditCard {
         }
     }
 
-    public CreditCard(@NonNull int cardNumber, @NonNull LocalDate expiration, @NonNull String cvv, @NonNull String nameOnCard) throws UnsupportedCardIssuerException, InvalidCardNumberException {
+    private @NonNull BigInteger cardNumber;
+    private @NonNull LocalDate expiration;
+    private @NonNull String cvv;
+    private @NonNull CardIssuer issuer;
+    private @NonNull String nameOnCard;
+
+    public CreditCard(@NonNull BigInteger cardNumber, @NonNull LocalDate expiration, @NonNull String cvv, @NonNull String nameOnCard) throws UnsupportedCardIssuerException, InvalidCardNumberException {
+        if (LocalDate.now().isAfter(expiration)) {
+            throw new IllegalArgumentException("Card is already expired");
+        }
+        validateCardNumber(cardNumber);
+
         this.cardNumber = cardNumber;
         this.expiration = expiration;
         this.cvv = cvv;
         this.issuer = CardIssuer.fromNumber(cardNumber);
         this.nameOnCard = nameOnCard;
     }
-
-    private @NonNull int cardNumber;
-    private @NonNull LocalDate expiration;
-    private @NonNull String cvv;
-    private @NonNull CardIssuer issuer;
-    private @NonNull String nameOnCard;
 
     public void setExpiration(@NonNull LocalDate expiration) {
         if (expiration.isBefore(LocalDate.now())) {
@@ -69,8 +75,8 @@ public class CreditCard {
         this.expiration = expiration;
     }
 
-    private boolean validateCardNumber(int cardNumber) throws InvalidCardNumberException {
-        var numberString = Integer.toString(cardNumber);
+    private boolean validateCardNumber(BigInteger cardNumber) throws InvalidCardNumberException {
+        var numberString = cardNumber.toString();
 
         if (numberString.length() != 16) {
             throw new InvalidCardNumberException("Card number length is too short");

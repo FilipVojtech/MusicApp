@@ -158,6 +158,7 @@ public class PasswordAuthInterface extends TextInterface {
             CreditCard card;
             final var number = Input.integer("Card number: ");
             final var expirationDate = Input.cardExpirationDate("Expiration date: ");
+            final var number = Input.cardNumber("Card number: ");
             final var cvv = Input.cvv("CVV: ");
             final var name = Input.string("Name on card: ");
 

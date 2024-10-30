@@ -83,11 +83,11 @@ class UserDaoImplTest {
     }
 
     @Test
-    void getUserByEmail_InvalidEmail() {
-        try (UserDao userDao = new UserDaoImpl(conn)) {
-        } catch (Exception e) {
-            fail("Could not init UserDao");
-        }
+    void getUserByEmail_NonExistentEmail() {
+        String email = "nonexisting@testemail.com";
+        UserDao userDao = new UserDaoImpl(conn);
+
+        assertThrows(RecordNotFound.class, () -> userDao.getUserByEmail(email));
     }
 
     @Test

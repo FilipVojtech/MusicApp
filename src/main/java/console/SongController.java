@@ -26,7 +26,7 @@ public class SongController extends TextInterface {
         switch (choice) {
             case "1" -> viewSongsByAlbum();
             case "2" -> searchSongs();
-            case "3" -> System.out.println("Exiting...");
+            case "3" -> System.out.println("Exiting");
             default -> System.out.println("Invalid choice, please try again.");
         }
     }

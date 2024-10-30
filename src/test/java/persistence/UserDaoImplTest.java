@@ -4,6 +4,7 @@ import business.User;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import persistence.exceptions.RecordNotFound;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -51,10 +52,10 @@ class UserDaoImplTest {
 
     @Test
     void getUser_InvalidId() {
-        try (UserDao userDao = new UserDaoImpl(conn)) {
-        } catch (Exception e) {
-            fail("Could not init UserDao");
-        }
+        int userId = 4;
+        UserDao userDao = new UserDaoImpl(conn);
+
+        assertThrows(RecordNotFound.class, () -> userDao.getUser(userId));
     }
 
     @Test

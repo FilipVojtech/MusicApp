@@ -1,8 +1,11 @@
 package util;
 
+import util.exceptions.ExpirationDateInThePast;
+
 import java.math.BigInteger;
 import java.text.MessageFormat;
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -157,13 +160,15 @@ public class Input {
 
     /**
      * Prompts the user for a card expiration date.
-     * @param prompt Prompt to display to the user.
-     * @return Valid card expiration date.
+     *
+     * @param prompt            Prompt to display to the user.
+     * @param throwOnDateInPast If set to true, throws {@link ExpirationDateInThePast} exception. If set to false, the previous input is discarded and user is prompted again.
+     * @return Valid card expiration date
+     * @throws ExpirationDateInThePast If the date set by the user is in the past
      */
-    public static LocalDate cardExpirationDate(String prompt) {
+    public static LocalDate cardExpirationDate(String prompt, boolean throwOnDateInPast) throws ExpirationDateInThePast {
         while (true) {
-            System.out.print(prompt + " [mm/yy]");
-            String input = sc.nextLine();
+            String input = string(prompt + " [mm/yy]", false);
             String[] inputParts = input.split("/");
 
             if (inputParts.length != 2) {
@@ -187,9 +192,19 @@ public class Input {
                 continue;
             }
 
-            var expiration = LocalDate.of(2000 + year, month, 1);
-            if (LocalDate.now().isBefore(expiration)) {
-                System.out.println("Card already expired. Please choose a different card.");
+            year += 2000;
+
+            var expiration = LocalDate.of(
+                    year,
+                    month,
+                    YearMonth.of(year, month).atEndOfMonth().getDayOfMonth()
+            );
+
+            if (expiration.isBefore(LocalDate.now())) {
+                if (throwOnDateInPast) {
+                    throw new ExpirationDateInThePast("Expiration date in the past.");
+                }
+                System.out.println("Expiration date in the past.");
                 continue;
             }
 
@@ -198,7 +213,18 @@ public class Input {
     }
 
     /**
+     * Prompts the user for a card expiration date.
+     *
+     * @param prompt Prompt to display to the user.
+     * @return Valid card expiration date.
+     */
+    public static LocalDate cardExpirationDate(String prompt) {
+        return cardExpirationDate(prompt, false);
+    }
+
+    /**
      * Prompts the user for cvv number
+     *
      * @param prompt Prompt to display to the user
      * @return Valid CVV number.
      */

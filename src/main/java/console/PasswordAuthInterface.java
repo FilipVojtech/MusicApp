@@ -10,8 +10,10 @@ import persistence.UserDao;
 import persistence.UserDaoImpl;
 import session.Session;
 import util.Input;
+import util.exceptions.ExpirationDateInThePast;
 
 import java.io.Console;
+import java.time.LocalDate;
 
 /**
  * @author Filip Vojtěch
@@ -180,9 +182,15 @@ public class PasswordAuthInterface extends TextInterface {
     private CreditCard getCreditCard() {
         while (true) {
             CreditCard card;
-            final var number = Input.integer("Card number: ");
-            final var expirationDate = Input.cardExpirationDate("Expiration date: ");
             final var number = Input.cardNumber("Card number: ");
+            final LocalDate expirationDate;
+            try {
+                expirationDate = Input.cardExpirationDate("Expiration date:", true);
+            } catch (ExpirationDateInThePast e) {
+                System.out.println("Expiration date in the past.");
+                System.out.println("Please choose a different card.");
+                continue;
+            }
             final var cvv = Input.cvv("CVV: ");
             final var name = Input.string("Name on card: ");
 

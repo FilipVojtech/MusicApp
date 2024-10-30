@@ -99,11 +99,28 @@ class UserDaoImplTest {
     }
 
     @Test
-    void createUser_1() {
-        try (UserDao userDao = new UserDaoImpl(conn)) {
-        } catch (Exception e) {
-            fail("Could not init UserDao");
+    void createUser() throws SQLException {
+        MySQLDao db = new MySQLDao("database-test.properties");
+        Connection con = db.getConnection();
+
+        try {
+            con.setAutoCommit(false);
+        } catch (SQLException e) {
+            fail("Could not establish connection.");
         }
+
+        UserDao userDao = new UserDaoImpl(con);
+        String newEmail = "test-code@test.com";
+        User newUser = new User(newEmail, "Testing Password", "Test Name");
+        boolean result = userDao.createUser(newUser);
+        User resultUser = userDao.getUserByEmail("test-code@test.com");
+
+        assertTrue(result);
+
+        User expectedUser = new User(4, newEmail, "Testing Password", "Test Name");
+        assertEquals(resultUser, expectedUser);
+
+        con.rollback();
     }
 
     @Test

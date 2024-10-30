@@ -46,6 +46,7 @@ CREATE TABLE album_songs (
 
 CREATE TABLE playlist (
                           id INT AUTO_INCREMENT PRIMARY KEY,
+                          name VARCHAR(60) NOT NULL,
                           owner_id INT,
                           visibility TINYINT(1),  -- TINYINT(1) for boolean values (0 = false, 1 = true)
                           rating INT CHECK (rating >= 1 AND rating <= 5),  -- Rating must be between 1 and 5

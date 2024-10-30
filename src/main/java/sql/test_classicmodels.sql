@@ -1,8 +1,3 @@
-DROP DATABASE IF EXISTS test_classicmodels;
-CREATE DATABASE IF NOT EXISTS test_classicmodels;
-
-USE test_classicmodels;
-
 CREATE TABLE app_user (
                           id INT AUTO_INCREMENT PRIMARY KEY,
                           email VARCHAR(255) NOT NULL,

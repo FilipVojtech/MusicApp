@@ -60,8 +60,7 @@ public class PasswordAuthInterface extends TextInterface {
             return null;
         }
 
-        try {
-            UserDao userDao = new UserDaoImpl();
+        try (UserDao userDao = new UserDaoImpl()) {
             User user = userDao.getUserByEmail(email);
             if (BCrypt.checkpw(new String(passwordArray), user.getPassword())) {
                 return user;
@@ -71,6 +70,9 @@ public class PasswordAuthInterface extends TextInterface {
             }
         } catch (RecordNotFound e) {
             System.out.println("Couldn't log in.");
+            return null;
+        } catch (Exception e) {
+            System.out.println("There was an issue logging in.");
             return null;
         }
     }
@@ -102,15 +104,17 @@ public class PasswordAuthInterface extends TextInterface {
         }
         System.gc();
 
-        UserDao userDao = new UserDaoImpl();
-
-        if (userDao.createUser(user)) {
-            System.out.println("Your account has been created successfully.");
-            return user;
-        } else {
-            System.out.println("Couldn't finish registration. Please try again.");
-            return null;
+        try (UserDao userDao = new UserDaoImpl()) {
+            if (userDao.createUser(user)) {
+                System.out.println("Your account has been created successfully.");
+                return user;
+            }
+        } catch (Exception e) {
+            System.out.println("There was an issue creating your account.");
         }
+
+        System.out.println("Couldn't finish registration. Please try again.");
+        return null;
     }
 
     private char[] getPassword() {

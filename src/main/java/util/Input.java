@@ -19,9 +19,25 @@ import java.util.regex.Pattern;
 public class Input {
     private static final Scanner sc = new Scanner(System.in);
 
+    /**
+     * Handles string before below public methods return
+     *
+     * @param string String to be handled
+     * @return Handled string
+     */
+    private static String handleStringBeforeReturn(String string) {
+        string = string.trim();
+        return string;
+    }
+
+    /**
+     * Prompts the user for a command.
+     *
+     * @return Command by the user
+     */
     public static String command() {
         System.out.print("> ");
-        return sc.nextLine();
+        return handleStringBeforeReturn(sc.nextLine());
     }
 
     /**
@@ -49,7 +65,7 @@ public class Input {
         if (!inputOnSameLine) {
             System.out.print('\n');
         }
-        return sc.nextLine();
+        return handleStringBeforeReturn(sc.nextLine());
     }
 
     /**
@@ -76,7 +92,7 @@ public class Input {
             Matcher matcher = pattern.matcher(email);
 
             if (matcher.find()) {
-                return email;
+                return handleStringBeforeReturn(email);
             } else {
                 System.out.println("Please enter an email address.");
             }
@@ -213,7 +229,9 @@ public class Input {
     }
 
     /**
-     * Prompts the user for a card expiration date.
+     * Prompts the user for a card expiration date.</br>
+     * This method does not handle expiration date in the past.
+     * For better handling on expired date use the other <code>cardExpirationDate</code> method.
      *
      * @param prompt Prompt to display to the user.
      * @return Valid card expiration date.
@@ -242,7 +260,7 @@ public class Input {
                 System.out.println("Please enter a CVV.");
                 continue;
             }
-            return input;
+            return handleStringBeforeReturn(input);
         }
     }
 }

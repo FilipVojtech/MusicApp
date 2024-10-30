@@ -1,5 +1,8 @@
 package console;
 
+import business.CreditCard;
+import business.InvalidCardNumberException;
+import business.UnsupportedCardIssuerException;
 import business.User;
 import org.mindrot.jbcrypt.BCrypt;
 import persistence.RecordNotFound;
@@ -71,6 +74,12 @@ public class PasswordAuthInterface extends TextInterface {
     }
 
     private User register() {
+        // Part 1 card
+        getCreditCard();
+        System.out.println("Credit card valid.");
+        System.out.println("Please continue by creating an account.");
+
+        // Part 2 user
         User user;
         {
             String email = getUniqueEmail();
@@ -90,7 +99,9 @@ public class PasswordAuthInterface extends TextInterface {
                     .build();
         }
         System.gc();
+
         UserDao userDao = new UserDaoImpl();
+
         if (userDao.createUser(user)) {
             System.out.println("Your account has been created successfully.");
             return user;
@@ -133,6 +144,30 @@ public class PasswordAuthInterface extends TextInterface {
             } catch (RecordNotFound ignore) {
                 return email;
             }
+        }
+    }
+
+    private CreditCard getCreditCard() {
+        while (true) {
+            CreditCard card;
+            final var number = Input.integer("Card number: ");
+            final var expirationDate = Input.cardExpirationDate("Expiration date: ");
+            final var cvv = Input.cvv("CVV: ");
+            final var name = Input.string("Name on card: ");
+
+            try {
+                card = new CreditCard(number, expirationDate, cvv, name);
+            } catch (InvalidCardNumberException e) {
+                System.out.println("Invalid card number.");
+                continue;
+            } catch (UnsupportedCardIssuerException e) {
+                System.out.println("Unsupported card issuer. Please use one of these cards:");
+                System.out.println("  - Visa");
+                System.out.println("  - Master Card");
+                System.out.println("  - American Express");
+                continue;
+            }
+            return card;
         }
     }
 }

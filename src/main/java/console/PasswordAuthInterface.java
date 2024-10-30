@@ -88,6 +88,9 @@ public class PasswordAuthInterface extends TextInterface {
      * @return Initialised {@link User} object. Null when user could not be created.
      */
     private User register() {
+        System.out.println("To create an account you have to add a valid credit card.");
+        System.out.println("Proceed with adding a card, then create your account.");
+
         // Part 1 card
         getCreditCard();
         System.out.println("Credit card valid.");

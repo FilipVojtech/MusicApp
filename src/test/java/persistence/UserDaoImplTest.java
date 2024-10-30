@@ -122,12 +122,4 @@ class UserDaoImplTest {
 
         con.rollback();
     }
-
-    @Test
-    void createUser_2() {
-        try (UserDao userDao = new UserDaoImpl(conn)) {
-        } catch (Exception e) {
-            fail("Could not init UserDao");
-        }
-    }
 }

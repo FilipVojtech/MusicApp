@@ -8,6 +8,8 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 
 class RatingDaoImplTest {
+    private MySQLDao connectionSource = new MySQLDao("resources/database_test.properties");
+
 
     @Test
     void rateSong() {

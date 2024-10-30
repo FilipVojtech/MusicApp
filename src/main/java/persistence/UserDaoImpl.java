@@ -29,7 +29,7 @@ public class UserDaoImpl extends MySQLDao implements UserDao {
 
     @Override
     public User getUser(@NonNull int id) throws RecordNotFound {
-        final var sql = "SELECT * FROM users WHERE id = ?";
+        final var sql = "SELECT * FROM app_user WHERE id = ?";
 
         try (Connection con = super.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -56,7 +56,7 @@ public class UserDaoImpl extends MySQLDao implements UserDao {
 
     @Override
     public User getUserByEmail(@NonNull String email) throws RecordNotFound {
-        final var sql = "SELECT * FROM users WHERE email = ?";
+        final var sql = "SELECT * FROM app_user WHERE email = ?";
 
         try (Connection con = super.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -83,7 +83,7 @@ public class UserDaoImpl extends MySQLDao implements UserDao {
 
     @Override
     public boolean createUser(@NonNull User user) throws EmailAddressAlreadyUsed {
-        final var sql = "INSERT INTO users (email, password, display_name) VALUE (?, ?, ?)";
+        final var sql = "INSERT INTO app_user (email, password, display_name) VALUE (?, ?, ?)";
 
         try {
             if (getUserByEmail(user.getEmail()) != null)

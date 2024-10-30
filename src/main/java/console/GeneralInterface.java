@@ -19,7 +19,6 @@ public class GeneralInterface extends TextInterface {
         System.out.println("0. Logout");
 
 
-
     }
 
     @Override
@@ -28,21 +27,11 @@ public class GeneralInterface extends TextInterface {
             case "0" -> logout();
             case "1" -> setNextInterface(InterfaceType.PlaylistController);
             case "2" -> setNextInterface(InterfaceType.RatingController);
-            case "3" -> {
-                TextInterface artistController = new ArtistController();
-                artistController.listOptions();
-            }
-            case "4" -> {
-                TextInterface albumController = new AlbumController();
-                albumController.listOptions();
-
-            }
-            case "5" -> {
-                TextInterface SongController = new SongController();
-                SongController.listOptions();
-            }
+            case "3" -> setNextInterface(InterfaceType.ArtistController);
+            case "4" -> setNextInterface(InterfaceType.AlbumController);
+            case "5" -> setNextInterface(InterfaceType.SongController);
             default -> {
-            System.out.println("Invalid choice. Please try again.");
+                System.out.println("Invalid choice. Please try again.");
             setNextInterface(InterfaceType.General);
             }
         }

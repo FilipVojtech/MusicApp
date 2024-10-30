@@ -16,7 +16,7 @@ import java.util.List;
  * and retrieve playlists and songs.
  */
 public class PlaylistController extends TextInterface {
-    private PlaylistDao playlistDao;
+    private PlaylistDao playlistDao = new PlaylistDaoImpl();
 
     public PlaylistController() {
         super();

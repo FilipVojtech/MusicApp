@@ -15,15 +15,9 @@ public class GeneralInterface extends TextInterface {
     @Override
     public void handleCommand(String choice) {
         switch (choice) {
+            case "1" -> setNextInterface(InterfaceType.PlaylistController);
+            case "2" -> setNextInterface(InterfaceType.RatingController);
             case "0" -> logout();
-            case "1" -> {
-                TextInterface playlistController = new PlaylistController();
-                playlistController.listOptions();
-            }
-            case "2" -> {
-                TextInterface ratingController = new RatingController();
-                ratingController.listOptions();
-            }
             default -> {
                 System.out.println("Invalid choice. Please try again.");
                 setNextInterface(InterfaceType.General);

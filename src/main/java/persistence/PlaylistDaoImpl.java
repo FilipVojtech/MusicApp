@@ -8,6 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PlaylistDaoImpl extends MySQLDao implements PlaylistDao {
+    public PlaylistDaoImpl() {
+        super();
+    }
+
     public PlaylistDaoImpl(Connection conn) {
         super(conn);
     }

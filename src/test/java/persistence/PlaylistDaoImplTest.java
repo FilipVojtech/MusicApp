@@ -14,8 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 
 class PlaylistDaoImplTest {
-    private MySQLDao connectionSource = new MySQLDao("resources/database_test.properties");
-
+    private MySQLDao connectionSource = new MySQLDao("database-test.properties");
 
     /*
     at current time of making tests, connection to dummy db isnt working. Unsure if tests are correct or wrong

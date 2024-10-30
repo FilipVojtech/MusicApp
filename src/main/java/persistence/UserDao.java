@@ -2,36 +2,45 @@ package persistence;
 
 import business.User;
 import lombok.NonNull;
+import persistence.exceptions.EmailAddressAlreadyUsed;
+import persistence.exceptions.RecordNotFound;
 
 /**
  * @author Filip Vojtěch
  */
-public interface UserDao {
+public interface UserDao extends AutoCloseable {
     /**
      * Retrieves a user by their ID
+     *
      * @param id ID to look up by
      * @return A new {@systemProperty User} object. Null if the user couldn't be found
+     * @throws RecordNotFound When the user is not found
      */
     User getUser(@NonNull int id) throws RecordNotFound;
 
     /**
      * Looks up user by their email
+     *
      * @param email Email to look up by
      * @return The found user. Null if none found
+     * @throws RecordNotFound When the user is not found
      */
     User getUserByEmail(@NonNull String email) throws RecordNotFound;
 
     /**
      * Creates a new user.
+     *
      * @param user The new user data
      * @return True if create succeeded. False otherwise.
+     * @throws EmailAddressAlreadyUsed When the created user has an email address already used by a different user.
      */
     boolean createUser(@NonNull User user) throws EmailAddressAlreadyUsed;
 
-    /**
-     * Updates the user
-     * @param newUserData Data to update the user
-     * @return True if update succeeded. False otherwise.
-     */
-    boolean updateUser(@NonNull User newUserData);
+//    /**
+//     * Updates the user
+//     *
+//     * @param newUserData Data to update the user
+//     * @return True if update succeeded. False otherwise.
+//     */
+//    boolean updateUser(@NonNull User newUserData);
 }

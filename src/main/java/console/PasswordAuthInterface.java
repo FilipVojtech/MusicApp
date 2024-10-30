@@ -1,16 +1,23 @@
 package console;
 
+import business.CreditCard;
+import business.exceptions.InvalidCardNumberException;
+import business.exceptions.UnsupportedCardIssuerException;
 import business.User;
 import org.mindrot.jbcrypt.BCrypt;
-import persistence.RecordNotFound;
+import persistence.exceptions.RecordNotFound;
 import persistence.UserDao;
 import persistence.UserDaoImpl;
 import session.Session;
 import util.Input;
+import util.exceptions.ExpirationDateInThePast;
 
 import java.io.Console;
+import java.time.LocalDate;
 
-
+/**
+ * @author Filip Vojtěch
+ */
 public class PasswordAuthInterface extends TextInterface {
     public PasswordAuthInterface() {
         super();
@@ -39,10 +46,18 @@ public class PasswordAuthInterface extends TextInterface {
                 if (user != null) Session.setUser(user);
             }
             case "0" -> exitProgram();
-            default -> System.out.println("Invalid choice. Please try again.");
+            default -> {
+                System.out.println("Invalid choice. Please try again.");
+                setNextInterface(InterfaceType.PasswordAuth);
+            }
         }
     }
 
+    /**
+     * Authenticates and authorizes the user.
+     *
+     * @return Initialised {@link User} object. Null when user could not be initialised or found.
+     */
     private User doAuth() {
         String email = Input.email();
         char[] passwordArray = getPassword();
@@ -52,8 +67,7 @@ public class PasswordAuthInterface extends TextInterface {
             return null;
         }
 
-        try {
-            UserDao userDao = new UserDaoImpl();
+        try (UserDao userDao = new UserDaoImpl()) {
             User user = userDao.getUserByEmail(email);
             if (BCrypt.checkpw(new String(passwordArray), user.getPassword())) {
                 return user;
@@ -64,10 +78,27 @@ public class PasswordAuthInterface extends TextInterface {
         } catch (RecordNotFound e) {
             System.out.println("Couldn't log in.");
             return null;
+        } catch (Exception e) {
+            System.out.println("There was an issue logging in.");
+            return null;
         }
     }
 
+    /**
+     * Registers a new valid user.
+     *
+     * @return Initialised {@link User} object. Null when user could not be created.
+     */
     private User register() {
+        System.out.println("To create an account you have to add a valid credit card.");
+        System.out.println("Proceed with adding a card, then create your account.");
+
+        // Part 1 card
+        getCreditCard();
+        System.out.println("Credit card valid.");
+        System.out.println("Please continue by creating an account.");
+
+        // Part 2 user
         User user;
         {
             String email = getUniqueEmail();
@@ -87,16 +118,25 @@ public class PasswordAuthInterface extends TextInterface {
                     .build();
         }
         System.gc();
-        UserDao userDao = new UserDaoImpl();
-        if (userDao.createUser(user)) {
-            System.out.println("Your account has been created successfully.");
-            return user;
-        } else {
-            System.out.println("Couldn't finish registration. Please try again.");
-            return null;
+
+        try (UserDao userDao = new UserDaoImpl()) {
+            if (userDao.createUser(user)) {
+                System.out.println("Your account has been created successfully.");
+                return user;
+            }
+        } catch (Exception e) {
+            System.out.println("There was an issue creating your account.");
         }
+
+        System.out.println("Couldn't finish registration. Please try again.");
+        return null;
     }
 
+    /**
+     * Prompts the user for a password.
+     *
+     * @return Character array of the character from the password
+     */
     private char[] getPassword() {
         Console console = System.console();
 
@@ -122,14 +162,51 @@ public class PasswordAuthInterface extends TextInterface {
         while (true) {
             String email = Input.email();
 
-            try {
-                UserDao userDao = new UserDaoImpl();
+            try (UserDao userDao = new UserDaoImpl()) {
                 userDao.getUserByEmail(email);
                 System.out.println("Email already taken.");
                 continue;
             } catch (RecordNotFound ignore) {
                 return email;
+            } catch (Exception e) {
+                throw new RuntimeException("Something went wrong while checking email.");
             }
+        }
+    }
+
+    /**
+     * Retrieves a credit card from the user
+     *
+     * @return Valid {@link CreditCard} object which details are current.
+     */
+    private CreditCard getCreditCard() {
+        while (true) {
+            CreditCard card;
+            final var number = Input.cardNumber("Card number: ");
+            final LocalDate expirationDate;
+            try {
+                expirationDate = Input.cardExpirationDate("Expiration date:", true);
+            } catch (ExpirationDateInThePast e) {
+                System.out.println("Expiration date in the past.");
+                System.out.println("Please choose a different card.");
+                continue;
+            }
+            final var cvv = Input.cvv("CVV: ");
+            final var name = Input.string("Name on card: ");
+
+            try {
+                card = new CreditCard(number, expirationDate, cvv, name);
+            } catch (InvalidCardNumberException e) {
+                System.out.println("Invalid card number.");
+                continue;
+            } catch (UnsupportedCardIssuerException e) {
+                System.out.println("Unsupported card issuer. Please use one of these cards:");
+                System.out.println("  - Visa");
+                System.out.println("  - Master Card");
+//                System.out.println("  - American Express");
+                continue;
+            }
+            return card;
         }
     }
 }

@@ -1,8 +1,3 @@
-DROP DATABASE IF EXISTS test_classicmodels;
-CREATE DATABASE IF NOT EXISTS test_classicmodels;
-
-USE test_classicmodels;
-
 INSERT INTO artist (name) VALUES
                               ('The Beatles'),
                               ('Led Zeppelin'),
@@ -27,9 +22,10 @@ INSERT INTO song (artist_id, title, rating) VALUES
                                                 (5, 'Gimme Shelter', 5);
 
 INSERT INTO app_user (email, password, display_name) VALUES
-                                                         ('user1@example.com', 'password123', 'User One'),
-                                                         ('user2@example.com', 'password456', 'User Two'),
-                                                         ('user3@example.com', 'password789', 'User Three');
+                                                         # All passwords are "Password"
+                                                         ('user1@example.com', '$2a$14$Sci/QKCO4xEAqh2O3/PSk.XGWdEF.Jxy/AB0cDCkGWu19Gz1d3gPq', 'User One'),
+                                                         ('user2@example.com', '$2a$14$IUvGQl20ZUAZ78zB./nYVODp9yrq9UtMkCvkx7kh0kBCpU1bg9vo2', 'User Two'),
+                                                         ('user3@example.com', '$2a$14$BYxz1MGCgDNqzkg7wRJtveJHTdAeX1FzBaXVx/YAK8NAzKkNy8Xf2', 'User Three');
 
 INSERT INTO song_ratings (user_id, song_id, rating_value) VALUES
                                                               (1, 1, 5),
@@ -47,10 +43,10 @@ INSERT INTO album_songs (album_id, song_id) VALUES
                                                 (4, 6),
                                                 (5, 7);
 
-INSERT INTO playlist (owner_id, visibility, rating) VALUES
-                                                        (1, 1, 5),
-                                                        (2, 0, 4),
-                                                        (3, 1, 3);
+INSERT INTO playlist (name, owner_id, visibility, rating) VALUES
+                                                        ('Playlist 1',1, 1, 5),
+                                                        ('Playlist 2',2, 0, 4),
+                                                        ('Playlist 3',3, 1, 3);
 
 INSERT INTO playlist_songs (playlist_id, song_id) VALUES
                                                       (1, 1),

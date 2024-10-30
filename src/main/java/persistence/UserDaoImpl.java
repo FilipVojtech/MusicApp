@@ -2,6 +2,8 @@ package persistence;
 
 import business.User;
 import lombok.NonNull;
+import persistence.exceptions.EmailAddressAlreadyUsed;
+import persistence.exceptions.RecordNotFound;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -27,7 +29,7 @@ public class UserDaoImpl extends MySQLDao implements UserDao {
 
     @Override
     public User getUser(@NonNull int id) throws RecordNotFound {
-        final var sql = "SELECT * FROM users WHERE id = ?";
+        final var sql = "SELECT * FROM app_user WHERE id = ?";
 
         try (Connection con = super.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -54,7 +56,7 @@ public class UserDaoImpl extends MySQLDao implements UserDao {
 
     @Override
     public User getUserByEmail(@NonNull String email) throws RecordNotFound {
-        final var sql = "SELECT * FROM users WHERE email = ?";
+        final var sql = "SELECT * FROM app_user WHERE email = ?";
 
         try (Connection con = super.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -81,7 +83,7 @@ public class UserDaoImpl extends MySQLDao implements UserDao {
 
     @Override
     public boolean createUser(@NonNull User user) throws EmailAddressAlreadyUsed {
-        final var sql = "INSERT INTO users (email, password, display_name) VALUE (?, ?, ?)";
+        final var sql = "INSERT INTO app_user (email, password, display_name) VALUE (?, ?, ?)";
 
         try {
             if (getUserByEmail(user.getEmail()) != null)
@@ -104,27 +106,27 @@ public class UserDaoImpl extends MySQLDao implements UserDao {
         return false;
     }
 
-    @Override
-    public boolean updateUser(@NonNull User newUserData) {
-        if (newUserData.getId() == 0) {
-            System.out.println("Cannot update user. ID is not set.");
-        }
-        final var sql = "UPDATE users SET display_name = ?, email = ? WHERE id = ?;";
-
-        // todo: Check that new email address is unique
-        //     Allows the user to change their email address to someone else's
-
-        try (Connection con = super.getConnection();
-             PreparedStatement statement = con.prepareStatement(sql)) {
-            statement.setString(1, newUserData.getDisplayName());
-            statement.setString(2, newUserData.getEmail());
-            statement.setInt(3, newUserData.getId());
-
-            return statement.executeUpdate() > 0;
-
-        } catch (SQLException e) {
-            System.out.println("Couldn't update user");
-        }
-        return false;
-    }
+//    @Override
+//    public boolean updateUser(@NonNull User newUserData) {
+//        if (newUserData.getId() == 0) {
+//            System.out.println("Cannot update user. ID is not set.");
+//        }
+//        final var sql = "UPDATE app_user SET display_name = ?, email = ? WHERE id = ?;";
+//
+//        // todo: Check that new email address is unique
+//        //     Allows the user to change their email address to someone else's
+//
+//        try (Connection con = super.getConnection();
+//             PreparedStatement statement = con.prepareStatement(sql)) {
+//            statement.setString(1, newUserData.getDisplayName());
+//            statement.setString(2, newUserData.getEmail());
+//            statement.setInt(3, newUserData.getId());
+//
+//            return statement.executeUpdate() > 0;
+//
+//        } catch (SQLException e) {
+//            System.out.println("Couldn't update user");
+//        }
+//        return false;
+//    }
 }

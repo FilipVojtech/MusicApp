@@ -13,7 +13,9 @@ import util.Input;
 
 import java.io.Console;
 
-
+/**
+ * @author Filip Vojtěch
+ */
 public class PasswordAuthInterface extends TextInterface {
     public PasswordAuthInterface() {
         super();

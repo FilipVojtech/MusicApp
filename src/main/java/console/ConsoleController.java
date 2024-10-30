@@ -3,6 +3,11 @@ package console;
 import session.Session;
 import util.Input;
 
+/**
+ * @author Filip Vojtěch
+ * @author Dylan Habis
+ * @author Alex Clinton
+ */
 public class ConsoleController {
     public static void doInterface(boolean isDebugging) {
         TextInterface tInterface = new GeneralInterface();

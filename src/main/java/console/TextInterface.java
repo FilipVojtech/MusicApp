@@ -5,6 +5,9 @@ import lombok.NonNull;
 import lombok.Setter;
 import session.Session;
 
+/**
+ * @author Filip Vojtěch
+ */
 public abstract class TextInterface {
     @Getter
     @Setter

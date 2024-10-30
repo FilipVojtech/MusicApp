@@ -2,6 +2,11 @@ package console;
 
 import session.Session;
 
+/**
+ * @author Filip Vojtěch
+ * @author Dylan Habis
+ * @author Alex Clinton
+ */
 public class GeneralInterface extends TextInterface {
     @Override
     public void listOptions() {

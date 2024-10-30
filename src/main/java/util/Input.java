@@ -1,6 +1,7 @@
 package util;
 
 import java.text.MessageFormat;
+import java.time.LocalDate;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -124,6 +125,48 @@ public class Input {
      */
     public static int integer(String prompt) {
         return integer(prompt, Integer.MIN_VALUE, Integer.MAX_VALUE);
+    }
+
+    /**
+     * Prompts the user for a card expiration date.
+     * @param prompt Prompt to display to the user.
+     * @return Valid card expiration date.
+     */
+    public static LocalDate cardExpirationDate(String prompt) {
+        while (true) {
+            System.out.print(prompt + " [mm/yy]");
+            String input = sc.nextLine();
+            String[] inputParts = input.split("/");
+
+            if (inputParts.length != 2) {
+                System.out.println("Please enter the date in a correct format.");
+                continue;
+            }
+
+            int month;
+            int year;
+
+            try {
+                month = Integer.parseInt(inputParts[0]);
+                year = Integer.parseInt(inputParts[1]);
+            } catch (NumberFormatException e) {
+                System.out.println("Please enter the date in a correct format.");
+                continue;
+            }
+
+            if (month < 1 || month > 12) {
+                System.out.println("Please enter a valid month.");
+                continue;
+            }
+
+            var expiration = LocalDate.of(2000 + year, month, 1);
+            if (LocalDate.now().isBefore(expiration)) {
+                System.out.println("Card already expired. Please choose a different card.");
+                continue;
+            }
+
+            return expiration;
+        }
     }
 
     /**
